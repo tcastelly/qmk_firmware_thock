@@ -20,7 +20,7 @@ CUSTOM_MATRIX = yes
 #   comment out to disable the options.
 #
 BOOTMAGIC_ENABLE = no       # Virtual DIP switch configuration(+1000)
-MOUSEKEY_ENABLE = no        # Mouse keys(+4700)
+MOUSEKEY_ENABLE = yes        # Mouse keys(+4700)
 EXTRAKEY_ENABLE = no # yes       # Audio control and System control(+450)
 CONSOLE_ENABLE = yes         # Console for debug(+400)
 COMMAND_ENABLE = no         # Commands for debug and configuration
@@ -30,4 +30,4 @@ UNICODE_ENABLE = no         # Unicode
 VIRTSER_ENABLE = no         # USB Serial Driver
 RAW_ENABLE = no             # Raw device
 AUTO_SHIFT_ENABLE = no      # Auto Shift
-TAP_DANCE_ENABLE = no
+TAP_DANCE_ENABLE = yes
