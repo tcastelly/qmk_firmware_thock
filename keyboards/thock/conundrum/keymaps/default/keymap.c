@@ -8,13 +8,15 @@ enum layers {
   _RAISE,
   _ADJUST,
   _ARROWS,
-  _MOUSE
+  _MACROS,
+  _NUM_PADS
 };
 
 enum keycodes {
   QWERTY = SAFE_RANGE,
   ARROWS,
-  MOUSE
+  MACROS,
+  NUM_PADS
 };
 
 
@@ -60,14 +62,14 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * |------+------+------+------+------+------|------+------+------+------+------+------|
  * | Shift|   Z  |   X  |   C  |   V  |   B  |   N  |   M  |   ,  |   .  |   /  |Enter |
  * |------+------+------+------+------+------+------+------+------+------+------+------|
- * |Ctrl | MOUSE | Alt  | GUI  |Lower |    Space    |Raise | Left | Down |  Up  |Right |
+ * |Ctrl | Num   | Alt  | GUI  |Lower |Macros|Space |Raise | Left | Down |  Up  |Right |
  * `-----------------------------------------------------------------------------------'
  */
 [_QWERTY] = LAYOUT_grid(
-    KC_TAB,        KC_Q,    KC_W,    KC_E,    KC_R,    KC_T,    KC_Y,    KC_U,    KC_I,    KC_O,    KC_P,    KC_BSPC,
-    TD(ARR_LAYR),  KC_A,    KC_S,    KC_D,    KC_F,    KC_G,    KC_H,    KC_J,    KC_K,    KC_L,    KC_SCLN, KC_QUOT,
-    KC_LSFT,       KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,    KC_N,    KC_M,    KC_COMM, KC_DOT,  KC_SLSH, KC_ENT ,
-    KC_LCTL,       MOUSE,   KC_LALT, KC_LGUI, LOWER,   KC_SPC,  KC_SPC,  RAISE,   KC_LEFT, KC_DOWN, KC_UP,   KC_RGHT
+    KC_TAB,        KC_Q,     KC_W,    KC_E,    KC_R,    KC_T,    KC_Y,    KC_U,    KC_I,    KC_O,    KC_P,    KC_BSPC,
+    TD(ARR_LAYR),  KC_A,     KC_S,    KC_D,    KC_F,    KC_G,    KC_H,    KC_J,    KC_K,    KC_L,    KC_SCLN, KC_QUOT,
+    KC_LSFT,       KC_Z,     KC_X,    KC_C,    KC_V,    KC_B,    KC_N,    KC_M,    KC_COMM, KC_DOT,  KC_SLSH, KC_ENT ,
+    KC_LCTL,       NUM_PADS, KC_LALT, KC_LGUI, LOWER,   MACROS,  KC_SPC,  RAISE,   KC_LEFT, KC_DOWN, KC_UP,   KC_RGHT
 ),
 
 /* Lower
@@ -143,22 +145,40 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 ),
 
 
-/* Mouse
+/* NumPads
  * ,-----------------------------------------------------------------------------------.
- * |      |      |      |      |      |      |WheelL|WheelD|WheelU|WheelR|      |      |
+ * |      |      |      |      |      |      |      |      |  7   |  8   |  9   | Bksp |
  * |------+------+------+------+------+-------------+------+------+------+------+------|
- * |      |      |      |      |      |      | Left | Down |  Up  |Right |      |      |
+ * |      |      |      |      |      |      |      |      |  4   |  5   |  6   |  -   |
+ * |------+------+------+------+------+------|------+------+------+------+------+------|
+ * |      |      |      |      |      |      |      |      |  1   |  2   |  3   |  +   |
+ * |------+------+------+------+------+------+------+------+------+------+------+------|
+ * |      |      |      |      |      |             |      |  0   |  .   |      |Enter |
+ * `-----------------------------------------------------------------------------------'
+ */
+[_NUM_PADS] = LAYOUT_grid(
+  _______, _______, _______, _______, _______,    _______,    _______,    _______,    KC_7,     KC_8,        KC_9,    KC_BSPC,
+  _______, _______, _______, _______, _______,    _______,    _______,    _______,    KC_4,     KC_5,        KC_6,    KC_MINS,
+  _______, _______, _______, _______, _______,    _______,    _______,    _______,    KC_1,     KC_2,        KC_3,    KC_PLUS,
+  _______, _______, _______, _______, _______,    _______,    _______,    _______,    KC_0,     KC_DOT,      _______, KC_ENT
+),
+
+/* MACROS
+ * ,-----------------------------------------------------------------------------------.
+ * |      |      |      |      |Shft+$|      |Shft+^|      |      |      |      |      |
+ * |------+------+------+------+------+-------------+------+------+------+------+------|
+ * |      |      |      |      |      |      |      |      |      |      |      |      |
  * |------+------+------+------+------+------|------+------+------+------+------+------|
  * |      |      |      |      |      |      |      |      |      |      |      |      |
  * |------+------+------+------+------+------+------+------+------+------+------+------|
- * |      |      |      |      |      | L Click     |      |      |      |      |      |
+ * |      |      |      |      |      |             |      |      |      |      |      |
  * `-----------------------------------------------------------------------------------'
  */
-[_MOUSE] = LAYOUT_grid(
-  _______, _______, _______, _______, _______,    _______,    KC_WH_L,    KC_WH_D,    KC_WH_U,  KC_WH_R,     _______, _______,
-  _______, _______, _______, _______, _______,    _______,    KC_MS_LEFT, KC_MS_DOWN, KC_MS_UP, KC_MS_RIGHT, _______, _______,
+[_MACROS] = LAYOUT_grid(
+  _______, _______, _______, _______, KC_DLR,     _______,    KC_CIRC,    _______,    _______,  _______,     _______, _______,
   _______, _______, _______, _______, _______,    _______,    _______,    _______,    _______,  _______,     _______, _______,
-  _______, _______, _______, _______, KC_MS_BTN2, KC_MS_BTN2, KC_MS_BTN2, KC_MS_BTN1, _______,  _______,     _______, _______
+  _______, _______, _______, _______, _______,    _______,    _______,    _______,    _______,  _______,     _______, _______,
+  _______, _______, _______, _______, _______,    _______,    _______,    _______,    _______,  _______,     _______, _______
 )
 
 };
@@ -172,29 +192,30 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     case ARROWS:
       if (record->event.pressed) {
         layer_on(_ARROWS);
-        update_tri_layer(_LOWER, _RAISE, _ADJUST);
       } else {
         layer_off(_ARROWS);
-        update_tri_layer(_LOWER, _RAISE, _ADJUST);
       }
       return false;
       break;
-    case MOUSE:
+
+    case NUM_PADS:
       if (record->event.pressed) {
-        layer_on(_MOUSE);
-        update_tri_layer(_LOWER, _RAISE, _ADJUST);
+        layer_on(_NUM_PADS);
       } else {
-        layer_off(_MOUSE);
-        update_tri_layer(_LOWER, _RAISE, _ADJUST);
+        layer_off(_NUM_PADS);
       }
       return false;
       break;
-    case QWERTY:
-      if (record->event.pressed) {
-        set_single_persistent_default_layer(_QWERTY);
-      }
-      return false;
-      break;
+
+     case MACROS:
+       if (record->event.pressed) {
+           register_code(KC_LSFT);
+           layer_on(_MACROS);
+       } else {
+           unregister_code(KC_LSFT);
+           layer_off(_MACROS);
+       }
+       break;
   }
   return true;
 }
@@ -224,16 +245,6 @@ void ql_finished(qk_tap_dance_state_t *state, void *user_data) {
             break;
         case TD_SINGLE_HOLD:
             layer_on(_ARROWS);
-            break;
-        case TD_DOUBLE_TAP:
-            // Check to see if the layer is already set
-            if (layer_state_is(_MOUSE)) {
-                // If already set, then switch it off
-                layer_off(_MOUSE);
-            } else {
-                // If not already set, then switch the layer on
-                layer_on(_MOUSE);
-            }
             break;
         default:
             break;
