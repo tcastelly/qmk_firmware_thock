@@ -183,10 +183,6 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
 };
 
-uint32_t layer_state_set_user(uint32_t state) {
-  return update_tri_layer_state(state, _LOWER, _RAISE, _ADJUST);
-}
-
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
   switch (keycode) {
     case ARROWS:
@@ -215,6 +211,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
            unregister_code(KC_LSFT);
            layer_off(_MACROS);
        }
+      return false;
        break;
   }
   return true;
