@@ -1,5 +1,4 @@
 #include QMK_KEYBOARD_H
-
 #include "quantum.h"
 
 enum layers {
@@ -14,15 +13,12 @@ enum layers {
 
 enum keycodes {
   QWERTY = SAFE_RANGE,
+  LOWER,
+  RAISE,
   ARROWS,
   MACROS,
   NUM_PADS
 };
-
-
-#define LOWER MO(_LOWER)
-#define RAISE MO(_RAISE)
-#define TAPPING_TERM 200
 
 // Define a type for as many tap dance states as you need
 typedef enum {
@@ -110,7 +106,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
 /* Adjust (Lower + Raise)
  * ,-----------------------------------------------------------------------------------.
- * |      |     |      |      |      |      |      |      |      |      |      | Reset|
+ * |      |     |      |      |      |      |      |      |      |      |      | Reset |
  * |------+------+------+------+------+-------------+------+------+------+------+------|
  * |      |      |      |      |      |AGnorm|AGswap|      |      |      |      |      |
  * |------+------+------+------+------+------|------+------+------+------+------+------|
@@ -183,8 +179,34 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
 };
 
+uint32_t layer_state_set_user(uint32_t state) {
+  return update_tri_layer_state(state, _LOWER, _RAISE, _ADJUST);
+}
+
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
   switch (keycode) {
+    case LOWER:
+      if (record->event.pressed) {
+        layer_on(_LOWER);
+        update_tri_layer(_LOWER, _RAISE, _ADJUST);
+      } else {
+        layer_off(_LOWER);
+        update_tri_layer(_LOWER, _RAISE, _ADJUST);
+      }
+      return false;
+      break;
+
+    case RAISE:
+      if (record->event.pressed) {
+        layer_on(_RAISE);
+        update_tri_layer(_LOWER, _RAISE, _ADJUST);
+      } else {
+        layer_off(_RAISE);
+        update_tri_layer(_LOWER, _RAISE, _ADJUST);
+      }
+      return false;
+      break;
+
     case ARROWS:
       if (record->event.pressed) {
         layer_on(_ARROWS);
