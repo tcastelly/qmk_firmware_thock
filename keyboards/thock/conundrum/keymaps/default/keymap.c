@@ -161,7 +161,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
 /* MACROS
  * ,-----------------------------------------------------------------------------------.
- * |      |      |      |      |Shft+$|      |Shft+^|      |      |      |      |      |
+ * |      |      |      |      |      |      |      |      |      |      |      |      |
  * |------+------+------+------+------+-------------+------+------+------+------+------|
  * |      |      |      |      |      |      |      |      |      |      |      |      |
  * |------+------+------+------+------+------|------+------+------+------+------+------|
@@ -171,7 +171,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * `-----------------------------------------------------------------------------------'
  */
 [_MACROS] = LAYOUT_grid(
-  _______, _______, _______, _______, KC_DLR,     _______,    KC_CIRC,    _______,    _______,  _______,     _______, _______,
+  _______, _______, _______, _______, _______,    _______,    _______,    _______,    _______,  _______,     _______, _______,
   _______, _______, _______, _______, _______,    _______,    _______,    _______,    _______,  _______,     _______, _______,
   _______, _______, _______, _______, _______,    _______,    _______,    _______,    _______,  _______,     _______, _______,
   _______, _______, _______, _______, _______,    _______,    _______,    _______,    _______,  _______,     _______, _______
@@ -179,9 +179,10 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
 };
 
-uint32_t layer_state_set_user(uint32_t state) {
-  return update_tri_layer_state(state, _LOWER, _RAISE, _ADJUST);
-}
+// called each time the layer state change
+// uint32_t layer_state_set_user(uint32_t state) {
+//   return update_tri_layer_state(state, _LOWER, _RAISE, _ADJUST);
+// }
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
   switch (keycode) {
@@ -227,10 +228,10 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 
      case MACROS:
        if (record->event.pressed) {
-           register_code(KC_LSFT);
+           // register_code(KC_LSFT);
            layer_on(_MACROS);
        } else {
-           unregister_code(KC_LSFT);
+           // unregister_code(KC_LSFT);
            layer_off(_MACROS);
        }
        return false;
