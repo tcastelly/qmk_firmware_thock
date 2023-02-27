@@ -211,7 +211,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
            unregister_code(KC_LSFT);
            layer_off(_MACROS);
        }
-      return false;
+       return false;
        break;
   }
   return true;
@@ -221,10 +221,16 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 // Determine the current tap dance state
 td_state_t cur_dance(qk_tap_dance_state_t *state) {
     if (state->count == 1) {
-        if (!state->pressed) return TD_SINGLE_TAP;
-        else return TD_SINGLE_HOLD;
-    } else if (state->count == 2) return TD_DOUBLE_TAP;
-    else return TD_UNKNOWN;
+        if (!state->pressed) {
+            return TD_SINGLE_TAP;
+        }
+        else {
+            return TD_SINGLE_HOLD;
+        }
+    } else if (state->count == 2) {
+        return TD_DOUBLE_TAP;
+    }
+    return TD_UNKNOWN;
 }
 
 // Initialize tap structure associated with example tap dance key
