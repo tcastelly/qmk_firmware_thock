@@ -7,7 +7,7 @@ enum layers {
   _RAISE,
   _ADJUST,
   _ARROWS,
-  _MACROS,
+  _ACCENTS,
   _NUM_PADS
 };
 
@@ -16,7 +16,12 @@ enum keycodes {
   LOWER,
   RAISE,
   ARROWS,
-  MACROS,
+  ACCENTS,
+  ACCENT_TREMA,
+  ACCENT_E_GRAVE,
+  ACCENT_A_GRAVE,
+  ACCENT_U_GRAVE,
+  ACCENT_I_TREMA,
   NUM_PADS
 };
 
@@ -58,14 +63,14 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * |------+------+------+------+------+------|------+------+------+------+------+------|
  * | Shift|   Z  |   X  |   C  |   V  |   B  |   N  |   M  |   ,  |   .  |   /  |Enter |
  * |------+------+------+------+------+------+------+------+------+------+------+------|
- * | Ctrl | Num  |Macros| Alt  |  GUI |Lower |Space |Raise | Left | Down |  Up  |Right |
+ * | Ctrl | Num  |Accent| Alt  |  GUI |Lower |Space |Raise | Left | Down |  Up  |Right |
  * `-----------------------------------------------------------------------------------'
  */
 [_QWERTY] = LAYOUT_grid(
     KC_TAB,        KC_Q,     KC_W,    KC_E,    KC_R,    KC_T,    KC_Y,    KC_U,    KC_I,    KC_O,    KC_P,    KC_BSPC,
     TD(TD_ESC),    KC_A,     KC_S,    KC_D,    KC_F,    KC_G,    KC_H,    KC_J,    KC_K,    KC_L,    KC_SCLN, KC_QUOT,
     KC_LSFT,       KC_Z,     KC_X,    KC_C,    KC_V,    KC_B,    KC_N,    KC_M,    KC_COMM, KC_DOT,  KC_SLSH, KC_ENT ,
-    KC_LCTL,       NUM_PADS, MACROS,  KC_LALT, KC_LGUI, LOWER,   KC_SPC,  RAISE,   KC_LEFT, KC_DOWN, KC_UP,   KC_RGHT
+    KC_LCTL,       NUM_PADS, ACCENTS, KC_LALT, KC_LGUI, LOWER,   KC_SPC,  RAISE,   KC_LEFT, KC_DOWN, KC_UP,   KC_RGHT
 ),
 
 /* Lower
@@ -159,9 +164,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   _______, _______, _______, _______, _______,    _______,    _______,    _______,    KC_0,     KC_DOT,      _______, KC_ENT
 ),
 
-/* MACROS
+/* Accents
  * ,-----------------------------------------------------------------------------------.
- * |      |      |      |      |      |      |      |      |      |      |      |      |
+ * |   ~  |      |      |      |      |      |   ^  |      |      |      |      |      |
  * |------+------+------+------+------+-------------+------+------+------+------+------|
  * |      |      |      |      |      |      |      |      |      |      |      |      |
  * |------+------+------+------+------+------|------+------+------+------+------+------|
@@ -170,11 +175,11 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * |      |      |      |      |      |             |      |      |      |      |      |
  * `-----------------------------------------------------------------------------------'
  */
-[_MACROS] = LAYOUT_grid(
-  _______, _______, _______, _______, _______,    _______,    _______,    _______,    _______,  _______,     _______, _______,
-  _______, _______, _______, _______, _______,    _______,    _______,    _______,    _______,  _______,     _______, _______,
-  _______, _______, _______, _______, _______,    _______,    _______,    _______,    _______,  _______,     _______, _______,
-  _______, _______, _______, _______, _______,    _______,    _______,    _______,    _______,  _______,     _______, _______
+[_ACCENTS] = LAYOUT_grid(
+  KC_GRV,  _______,        _______, ACCENT_E_GRAVE, _______, _______, KC_6,    _______, ACCENT_I_TREMA, _______, _______, _______,
+  _______, ACCENT_A_GRAVE, _______, _______,        _______, _______, _______, _______, _______,        _______, _______, ACCENT_TREMA,
+  _______, _______,        _______, _______,        _______, _______, _______, _______, _______,        _______, _______, _______,
+  _______, _______,        _______, _______,        _______, _______, _______, _______, _______,        _______, _______, _______
 )
 
 };
@@ -226,15 +231,85 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
       return false;
       break;
 
-     case MACROS:
+     case ACCENTS:
        if (record->event.pressed) {
-           // register_code(KC_LSFT);
-           layer_on(_MACROS);
+           register_code(KC_LALT);
+           layer_on(_ACCENTS);
        } else {
-           // unregister_code(KC_LSFT);
-           layer_off(_MACROS);
+           unregister_code(KC_LALT);
+           layer_off(_ACCENTS);
        }
-       return false;
+       break;
+
+     case ACCENT_E_GRAVE:
+       if (record->event.pressed) {
+           register_code(KC_GRV);
+       } else {
+           unregister_code(KC_GRV);
+           unregister_code(KC_LALT);
+           register_code(KC_E);
+           unregister_code(KC_E);
+
+           layer_off(_ACCENTS);
+           layer_on(_QWERTY);
+       }
+       break;
+
+     case ACCENT_A_GRAVE:
+       if (record->event.pressed) {
+           register_code(KC_GRV);
+       } else {
+           unregister_code(KC_GRV);
+           unregister_code(KC_LALT);
+           register_code(KC_A);
+           unregister_code(KC_A);
+
+           layer_off(_ACCENTS);
+           layer_on(_QWERTY);
+       }
+       break;
+
+     case ACCENT_U_GRAVE:
+       if (record->event.pressed) {
+           register_code(KC_GRV);
+       } else {
+           unregister_code(KC_GRV);
+           unregister_code(KC_LALT);
+           register_code(KC_U);
+           unregister_code(KC_U);
+
+           layer_off(_ACCENTS);
+           layer_on(_QWERTY);
+       }
+       break;
+
+     case ACCENT_I_TREMA:
+       if (record->event.pressed) {
+           register_code(KC_LSFT);
+           register_code(KC_QUOT);
+           unregister_code(KC_QUOT);
+       } else {
+           unregister_code(KC_LSFT);
+           unregister_code(KC_LALT);
+           register_code(KC_I);
+           unregister_code(KC_I);
+
+           layer_off(_ACCENTS);
+           layer_on(_QWERTY);
+       }
+       break;
+
+     case ACCENT_TREMA:
+       if (record->event.pressed) {
+           register_code(KC_LSFT);
+           register_code(KC_QUOT);
+       } else {
+           unregister_code(KC_QUOT);
+           unregister_code(KC_LSFT);
+
+           layer_off(_ACCENTS);
+           layer_on(_QWERTY);
+       }
        break;
   }
   return true;
