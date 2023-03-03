@@ -20,7 +20,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include "config_common.h"
 
 // global time for tap dance
-#define TAPPING_TERM 200
+#define TAPPING_TERM 175
 
 /* USB Device descriptor parameter */
 #define VENDOR_ID           0x04D8
