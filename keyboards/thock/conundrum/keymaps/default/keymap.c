@@ -42,6 +42,7 @@ typedef struct {
 // custom tap dance
 enum {
     TD_ESC,
+    TD_TAB,
 };
 
 // Declare the functions to be used with your tap dance key(s)
@@ -52,6 +53,9 @@ td_state_t cur_dance(qk_tap_dance_state_t *state);
 // Functions associated with individual tap dances
 void ql_esc_finished(qk_tap_dance_state_t *state, void *user_data);
 void ql_esc_reset(qk_tap_dance_state_t *state, void *user_data);
+
+void ql_tab_finished(qk_tap_dance_state_t *state, void *user_data);
+void ql_tab_reset(qk_tap_dance_state_t *state, void *user_data);
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
@@ -67,7 +71,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * `-----------------------------------------------------------------------------------'
  */
 [_QWERTY] = LAYOUT_grid(
-    KC_TAB,        KC_Q,     KC_W,    KC_E,    KC_R,    KC_T,    KC_Y,    KC_U,    KC_I,    KC_O,    KC_P,    KC_BSPC,
+    TD(TD_TAB),    KC_Q,     KC_W,    KC_E,    KC_R,    KC_T,    KC_Y,    KC_U,    KC_I,    KC_O,    KC_P,    KC_BSPC,
     TD(TD_ESC),    KC_A,     KC_S,    KC_D,    KC_F,    KC_G,    KC_H,    KC_J,    KC_K,    KC_L,    KC_SCLN, KC_QUOT,
     KC_LSFT,       KC_Z,     KC_X,    KC_C,    KC_V,    KC_B,    KC_N,    KC_M,    KC_COMM, KC_DOT,  KC_SLSH, KC_ENT ,
     KC_LCTL,       NUM_PADS, ACCENTS, KC_LALT, KC_LGUI, LOWER,   KC_SPC,  RAISE,   KC_LEFT, KC_DOWN, KC_UP,   KC_RGHT
@@ -332,7 +336,7 @@ static td_tap_t ql_tap_state = {
     .state = TD_NONE
 };
 
-// Functions that control what our tap dance key does
+// tap dance action on ESC key
 void ql_esc_finished(qk_tap_dance_state_t *state, void *user_data) {
     ql_tap_state.state = cur_dance(state);
     switch (ql_tap_state.state) {
@@ -347,6 +351,25 @@ void ql_esc_finished(qk_tap_dance_state_t *state, void *user_data) {
     }
 }
 
+// tap dance action on TAB key
+void ql_tab_finished(qk_tap_dance_state_t *state, void *user_data) {
+    ql_tap_state.state = cur_dance(state);
+    switch (ql_tap_state.state) {
+        case TD_SINGLE_TAP:
+            tap_code(KC_TAB);
+            break;
+        case TD_SINGLE_HOLD:
+            tap_code16(KC_TILD);
+            break;
+        case TD_DOUBLE_TAP:
+            tap_code(KC_GRV);
+            break;
+        default:
+            break;
+    }
+}
+
+// clean ESC tap dance
 void ql_esc_reset(qk_tap_dance_state_t *state, void *user_data) {
     // If the key was held down and now is released then switch off the layer
     if (ql_tap_state.state == TD_SINGLE_HOLD) {
@@ -355,9 +378,15 @@ void ql_esc_reset(qk_tap_dance_state_t *state, void *user_data) {
     ql_tap_state.state = TD_NONE;
 }
 
+// clean TAB tap dance
+void ql_tab_reset(qk_tap_dance_state_t *state, void *user_data) {
+    ql_tap_state.state = TD_NONE;
+}
+
 // Associate our tap dance key with its functionality
 qk_tap_dance_action_t tap_dance_actions[] = {
-    [TD_ESC] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, ql_esc_finished, ql_esc_reset)
+    [TD_ESC] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, ql_esc_finished, ql_esc_reset),
+    [TD_TAB] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, ql_tab_finished, ql_tab_reset)
 };
 
 // Set a long-ish tapping term for tap-dance keys
