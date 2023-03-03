@@ -34,6 +34,13 @@ typedef enum {
     TD_DOUBLE_TAP
 } td_state_t;
 
+// "powerful tap-hold"
+typedef struct {
+    uint16_t tap;
+    uint16_t hold;
+    uint16_t held;
+} tap_dance_tap_hold_t;
+
 typedef struct {
     bool is_press_action;
     td_state_t state;
@@ -44,6 +51,8 @@ enum {
     TD_ESC,
     TD_TAB,
 };
+
+#define TD_INDEX(code) ((code)&0xFF)
 
 // Declare the functions to be used with your tap dance key(s)
 
@@ -189,6 +198,8 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 };
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
+  qk_tap_dance_action_t *action;
+
   switch (keycode) {
     case LOWER:
       if (record->event.pressed) {
@@ -310,6 +321,13 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
            layer_on(_QWERTY);
        }
        break;
+
+     case TD(TD_TAB):  // list all tap dance keycodes with tap-hold configurations
+       action = &tap_dance_actions[TD_INDEX(keycode)];
+       if (!record->event.pressed && action->state.count && !action->state.finished) {
+           tap_dance_tap_hold_t *tap_hold = (tap_dance_tap_hold_t *)action->user_data;
+           tap_code16(tap_hold->tap);
+       }
   }
   return true;
 }
@@ -351,24 +369,6 @@ void ql_esc_finished(qk_tap_dance_state_t *state, void *user_data) {
     }
 }
 
-// tap dance action on TAB key
-void ql_tab_finished(qk_tap_dance_state_t *state, void *user_data) {
-    ql_tap_state.state = cur_dance(state);
-    switch (ql_tap_state.state) {
-        case TD_SINGLE_TAP:
-            tap_code(KC_TAB);
-            break;
-        case TD_SINGLE_HOLD:
-            tap_code16(KC_TILD);
-           break;
-        case TD_DOUBLE_TAP:
-            tap_code(KC_GRV);
-            break;
-        default:
-            break;
-    }
-}
-
 // clean ESC tap dance
 void ql_esc_reset(qk_tap_dance_state_t *state, void *user_data) {
     // If the key was held down and now is released then switch off the layer
@@ -378,15 +378,40 @@ void ql_esc_reset(qk_tap_dance_state_t *state, void *user_data) {
     ql_tap_state.state = TD_NONE;
 }
 
-// clean TAB tap dance
-void ql_tab_reset(qk_tap_dance_state_t *state, void *user_data) {
-    ql_tap_state.state = TD_NONE;
+void tap_dance_tap_hold_finished(qk_tap_dance_state_t *state, void *user_data) {
+    tap_dance_tap_hold_t *tap_hold = (tap_dance_tap_hold_t *)user_data;
+
+    if (state->pressed) {
+        if (state->count == 1
+#ifndef PERMISSIVE_HOLD
+            && !state->interrupted
+#endif
+        ) {
+            register_code16(tap_hold->hold);
+            tap_hold->held = tap_hold->hold;
+        } else {
+            register_code16(tap_hold->tap);
+            tap_hold->held = tap_hold->tap;
+        }
+    }
 }
+
+void tap_dance_tap_hold_reset(qk_tap_dance_state_t *state, void *user_data) {
+    tap_dance_tap_hold_t *tap_hold = (tap_dance_tap_hold_t *)user_data;
+
+    if (tap_hold->held) {
+        unregister_code16(tap_hold->held);
+        tap_hold->held = 0;
+    }
+}
+
+#define ACTION_TAP_DANCE_TAP_HOLD(tap, hold) \
+    { .fn = {NULL, tap_dance_tap_hold_finished, tap_dance_tap_hold_reset}, .user_data = (void *)&((tap_dance_tap_hold_t){tap, hold, 0}), }
 
 // Associate our tap dance key with its functionality
 qk_tap_dance_action_t tap_dance_actions[] = {
     [TD_ESC] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, ql_esc_finished, ql_esc_reset),
-    [TD_TAB] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, ql_tab_finished, ql_tab_reset)
+    [TD_TAB] = ACTION_TAP_DANCE_TAP_HOLD(KC_GRV, KC_TAB)
 };
 
 // Set a long-ish tapping term for tap-dance keys
