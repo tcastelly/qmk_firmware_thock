@@ -411,7 +411,7 @@ void tap_dance_tap_hold_reset(qk_tap_dance_state_t *state, void *user_data) {
 // Associate our tap dance key with its functionality
 qk_tap_dance_action_t tap_dance_actions[] = {
     [TD_ESC] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, ql_esc_finished, ql_esc_reset),
-    [TD_TAB] = ACTION_TAP_DANCE_TAP_HOLD(KC_GRV, KC_TAB)
+    [TD_TAB] = ACTION_TAP_DANCE_TAP_HOLD(KC_TAB, KC_TILD)
 };
 
 // Set a long-ish tapping term for tap-dance keys
