@@ -52,6 +52,8 @@ enum {
     TD_TAB,
 };
 
+bool is_tapdance_disabled = false;
+
 #define TD_INDEX(code) ((code)&0xFF)
 
 // Declare the functions to be used with your tap dance key(s)
@@ -223,6 +225,16 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
       return false;
       break;
 
+    case KC_LALT:
+    case KC_LGUI:
+      if (record->event.pressed) {
+          is_tapdance_disabled = true;
+      } else {
+          is_tapdance_disabled = false;
+      }
+      return true;
+      break;
+
     case ARROWS:
       if (record->event.pressed) {
         layer_on(_ARROWS);
@@ -323,6 +335,15 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
        break;
 
      case TD(TD_TAB):  // list all tap dance keycodes with tap-hold configurations
+       if (is_tapdance_disabled) {
+           if (record->event.pressed) {
+               register_code(KC_TAB);
+           } else {
+               unregister_code(KC_TAB);
+           }
+           return true;
+       }
+
        action = &tap_dance_actions[TD_INDEX(keycode)];
        if (!record->event.pressed && action->state.count && !action->state.finished) {
            tap_dance_tap_hold_t *tap_hold = (tap_dance_tap_hold_t *)action->user_data;
