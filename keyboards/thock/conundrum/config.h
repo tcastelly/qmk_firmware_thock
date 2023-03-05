@@ -21,6 +21,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 // global time for tap dance
 #define TAPPING_TERM 175
+#define TAPPING_TERM_PER_KEY
 
 /* USB Device descriptor parameter */
 #define VENDOR_ID           0x04D8
