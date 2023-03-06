@@ -335,6 +335,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 
        if (!record->event.pressed && keycode == TD(TD_ESC)) {
            layer_off(_ARROWS);
+              is_hold_tapdance_disabled = false;
        }
        break;
   }
@@ -371,6 +372,8 @@ void tap_dance_tap_hold_reset(qk_tap_dance_state_t *state, void *user_data) {
 
 void tap_dance_tap_hold_finished_layout(qk_tap_dance_state_t *state, void *user_data) {
     tap_dance_tap_hold_t *tap_hold = (tap_dance_tap_hold_t *)user_data;
+
+    is_hold_tapdance_disabled = true;
 
     if (state->pressed) {
         if (state->count == 1
