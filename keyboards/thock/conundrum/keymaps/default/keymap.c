@@ -56,7 +56,7 @@ enum {
     TD_SCLN
 };
 
-bool is_tapdance_disabled = false;
+bool is_hold_tapdance_disabled = false;
 
 #define TD_INDEX(code) ((code)&0xFF)
 
@@ -206,22 +206,26 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
   switch (keycode) {
     case LOWER:
       if (record->event.pressed) {
+        is_hold_tapdance_disabled = true;
         layer_on(_LOWER);
         update_tri_layer(_LOWER, _RAISE, _ADJUST);
       } else {
         layer_off(_LOWER);
         update_tri_layer(_LOWER, _RAISE, _ADJUST);
+        is_hold_tapdance_disabled = false;
       }
       return false;
       break;
 
     case RAISE:
       if (record->event.pressed) {
+        is_hold_tapdance_disabled = true;
         layer_on(_RAISE);
         update_tri_layer(_LOWER, _RAISE, _ADJUST);
       } else {
         layer_off(_RAISE);
         update_tri_layer(_LOWER, _RAISE, _ADJUST);
+        is_hold_tapdance_disabled = false;
       }
       return false;
       break;
@@ -230,40 +234,43 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     case KC_LALT:
     case KC_LGUI:
       if (record->event.pressed) {
-          is_tapdance_disabled = true;
+          is_hold_tapdance_disabled = true;
       } else {
-          is_tapdance_disabled = false;
+          is_hold_tapdance_disabled = false;
       }
       return true;
       break;
 
     case ARROWS:
       if (record->event.pressed) {
+        is_hold_tapdance_disabled = true;
         layer_on(_ARROWS);
       } else {
         layer_off(_ARROWS);
+        is_hold_tapdance_disabled = false;
       }
-      return false;
       break;
 
     case NUM_PADS:
       if (record->event.pressed) {
+        is_hold_tapdance_disabled = true;
         layer_on(_NUM_PADS);
       } else {
         layer_off(_NUM_PADS);
+        is_hold_tapdance_disabled = false;
       }
-      return false;
       break;
 
      case ACCENTS:
        if (record->event.pressed) {
+           is_hold_tapdance_disabled = true;
            register_code(KC_LALT);
            layer_on(_ACCENTS);
        } else {
            unregister_code(KC_LALT);
            layer_off(_ACCENTS);
+           is_hold_tapdance_disabled = false;
        }
-       return false;
        break;
 
      case ACCENT_E_GRAVE:
@@ -278,7 +285,6 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
            layer_off(_ACCENTS);
            layer_on(_QWERTY);
        }
-       return false;
        break;
 
      case ACCENT_A_GRAVE:
@@ -293,7 +299,6 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
            layer_off(_ACCENTS);
            layer_on(_QWERTY);
        }
-       return false;
        break;
 
      case ACCENT_U_GRAVE:
@@ -308,7 +313,6 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
            layer_off(_ACCENTS);
            layer_on(_QWERTY);
        }
-       return false;
        break;
 
      case ACCENT_I_TREMA:
@@ -325,7 +329,6 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
            layer_off(_ACCENTS);
            layer_on(_QWERTY);
        }
-       return false;
        break;
 
      case ACCENT_TREMA:
@@ -339,7 +342,6 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
            layer_off(_ACCENTS);
            layer_on(_QWERTY);
        }
-       return false;
        break;
 
      case TD(TD_O):  // list all tap dance keycodes with tap-hold configurations
@@ -380,6 +382,7 @@ static td_tap_t ql_tap_state = {
 
 // tap dance action on ESC key
 void ql_esc_finished(qk_tap_dance_state_t *state, void *user_data) {
+    is_hold_tapdance_disabled = true;
     ql_tap_state.state = cur_dance(state);
     switch (ql_tap_state.state) {
         case TD_DOUBLE_TAP:
@@ -401,6 +404,8 @@ void ql_esc_reset(qk_tap_dance_state_t *state, void *user_data) {
         layer_off(_ARROWS);
     }
     ql_tap_state.state = TD_NONE;
+
+    is_hold_tapdance_disabled = false;
 }
 
 void tap_dance_tap_hold_finished(qk_tap_dance_state_t *state, void *user_data) {
@@ -408,7 +413,7 @@ void tap_dance_tap_hold_finished(qk_tap_dance_state_t *state, void *user_data) {
 
     if (state->pressed) {
         if (state->count == 1
-            && !is_tapdance_disabled
+            && !is_hold_tapdance_disabled
 #ifndef PERMISSIVE_HOLD
             && !state->interrupted
 #endif
@@ -446,10 +451,15 @@ qk_tap_dance_action_t tap_dance_actions[] = {
 
 // Set a long-ish tapping term for tap-dance keys
 uint16_t get_tapping_term(uint16_t keycode, keyrecord_t *record) {
+    if (keycode == QK_TAP_DANCE_MAX) {
+        return 275;
+    }
+
+    if (is_hold_tapdance_disabled) {
+        return TAPPING_TERM;
+    }
+
     switch (keycode) {
-        case QK_TAP_DANCE_MAX:
-            return 275;
-            break;
         case TD(TD_ESC):
             return 120;
             break;
