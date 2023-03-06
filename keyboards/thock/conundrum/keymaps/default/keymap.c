@@ -243,11 +243,9 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 
     case ARROWS:
       if (record->event.pressed) {
-        is_hold_tapdance_disabled = true;
         layer_on(_ARROWS);
       } else {
         layer_off(_ARROWS);
-        is_hold_tapdance_disabled = false;
       }
       break;
 
@@ -354,6 +352,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
            tap_dance_tap_hold_t *tap_hold = (tap_dance_tap_hold_t *)action->user_data;
            tap_code16(tap_hold->tap);
        }
+       break;
   }
   return true;
 }
@@ -451,15 +450,10 @@ qk_tap_dance_action_t tap_dance_actions[] = {
 
 // Set a long-ish tapping term for tap-dance keys
 uint16_t get_tapping_term(uint16_t keycode, keyrecord_t *record) {
-    if (keycode == QK_TAP_DANCE_MAX) {
-        return 275;
-    }
-
-    if (is_hold_tapdance_disabled) {
-        return TAPPING_TERM;
-    }
-
     switch (keycode) {
+        case QK_TAP_DANCE_MAX:
+            return 275;
+            break;
         case TD(TD_ESC):
             return 120;
             break;
