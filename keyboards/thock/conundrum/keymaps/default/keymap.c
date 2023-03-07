@@ -311,7 +311,9 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
        }
        break;
 
-     case TD(TD_O):  // list all tap dance keycodes with tap-hold configurations
+     // list all tap dance keycodes with tap-hold configurations
+     // default tap for `hold tap dance`
+     case TD(TD_O):
      case TD(TD_ESC):
      case TD(TD_TAB):
      case TD(TD_P):
@@ -323,7 +325,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
            tap_code16(tap_hold->tap);
        }
 
-       if (!record->event.pressed && keycode == TD(TD_ESC)) {
+       if (keycode == TD(TD_ESC) && !record->event.pressed) {
            layer_off(_ARROWS);
            is_hold_tapdance_disabled = false;
        }
@@ -366,17 +368,21 @@ void tap_dance_tap_hold_finished_layout(qk_tap_dance_state_t *state, void *user_
     is_hold_tapdance_disabled = true;
 
     if (state->pressed) {
+        layer_on(tap_hold->hold);
+
         if (state->count == 1
 #ifndef PERMISSIVE_HOLD
             && !state->interrupted
 #endif
         ) {
-            layer_on(tap_hold->hold);
             tap_hold->held = tap_hold->hold;
         } else {
-            register_code16(tap_hold->tap);
-            tap_hold->held = tap_hold->tap;
-           is_hold_tapdance_disabled = false;
+            // don t register tap
+            // in case of arrow navigation, it prevent to send KC_ESC
+            // register_code16(tap_hold->tap);
+
+            tap_hold->held = 0;
+            is_hold_tapdance_disabled = false;
         }
     }
 }
@@ -415,7 +421,7 @@ uint16_t get_tapping_term(uint16_t keycode, keyrecord_t *record) {
             return 275;
             break;
         case TD(TD_ESC):
-            return 110;
+            return 120;
             break;
         default:
             return TAPPING_TERM;
