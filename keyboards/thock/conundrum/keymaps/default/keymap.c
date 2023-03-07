@@ -312,7 +312,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
        break;
 
      // list all tap dance keycodes with tap-hold configurations
-     // default tap for `hold tap dance`
+     // default tap
      case TD(TD_O):
      case TD(TD_ESC):
      case TD(TD_TAB):
