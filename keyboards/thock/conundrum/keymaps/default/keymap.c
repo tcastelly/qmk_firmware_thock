@@ -15,7 +15,6 @@ enum keycodes {
   QWERTY = SAFE_RANGE,
   LOWER,
   RAISE,
-  ARROWS,
   ACCENTS,
   ACCENT_TREMA,
   ACCENT_E_GRAVE,
@@ -218,16 +217,6 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
       return true;
       break;
 
-    case ARROWS:
-      if (record->event.pressed) {
-        is_hold_tapdance_disabled = true;
-        layer_on(_ARROWS);
-      } else {
-        layer_off(_ARROWS);
-        is_hold_tapdance_disabled = false;
-      }
-      break;
-
     case NUM_PADS:
       if (record->event.pressed) {
         is_hold_tapdance_disabled = true;
@@ -391,11 +380,22 @@ void tap_dance_tap_hold_finished_layout(qk_tap_dance_state_t *state, void *user_
     }
 }
 
+void tap_dance_tap_hold_reset_layout(qk_tap_dance_state_t *state, void *user_data) {
+    tap_dance_tap_hold_t *tap_hold = (tap_dance_tap_hold_t *)user_data;
+
+    is_hold_tapdance_disabled = false;
+
+    if (tap_hold->held) {
+        unregister_code16(tap_hold->held);
+        tap_hold->held = 0;
+    }
+}
+
 #define ACTION_TAP_DANCE_TAP_HOLD(tap, hold) \
     { .fn = {NULL, tap_dance_tap_hold_finished, tap_dance_tap_hold_reset}, .user_data = (void *)&((tap_dance_tap_hold_t){tap, hold, 0}), }
 
 #define ACTION_TAP_DANCE_TAP_HOLD_LAYOUT(tap, hold) \
-    { .fn = {NULL, tap_dance_tap_hold_finished_layout, tap_dance_tap_hold_reset}, .user_data = (void *)&((tap_dance_tap_hold_t){tap, hold, 0}), }
+    { .fn = {NULL, tap_dance_tap_hold_finished_layout, tap_dance_tap_hold_reset_layout}, .user_data = (void *)&((tap_dance_tap_hold_t){tap, hold, 0}), }
 
 // Associate our tap dance key with its functionality
 qk_tap_dance_action_t tap_dance_actions[] = {
