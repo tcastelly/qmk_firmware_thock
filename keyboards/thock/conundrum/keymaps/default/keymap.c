@@ -415,7 +415,7 @@ uint16_t get_tapping_term(uint16_t keycode, keyrecord_t *record) {
             return 275;
             break;
         case TD(TD_ESC):
-            return 120;
+            return 110;
             break;
         default:
             return TAPPING_TERM;
