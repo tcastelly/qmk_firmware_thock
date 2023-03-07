@@ -1,5 +1,6 @@
 #include QMK_KEYBOARD_H
 #include "quantum.h"
+#include <sys/time.h>
 
 enum layers {
   _QWERTY,
@@ -42,6 +43,8 @@ enum {
 };
 
 bool is_hold_tapdance_disabled = false;
+
+uint16_t last_t;
 
 #define TD_INDEX(code) ((code)&0xFF)
 
@@ -319,15 +322,19 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
      case TD(TD_P):
      case TD(TD_L):
      case TD(TD_SCLN):
+       if (keycode == TD(TD_ESC) && !record->event.pressed) {
+           layer_off(_ARROWS);
+           is_hold_tapdance_disabled = false;
+       }
+
+       if (timer_elapsed(last_t) < 50) {
+           return false;
+       }
+
        action = &tap_dance_actions[TD_INDEX(keycode)];
        if (!record->event.pressed && action->state.count && !action->state.finished) {
            tap_dance_tap_hold_t *tap_hold = (tap_dance_tap_hold_t *)action->user_data;
            tap_code16(tap_hold->tap);
-       }
-
-       if (keycode == TD(TD_ESC) && !record->event.pressed) {
-           layer_off(_ARROWS);
-           is_hold_tapdance_disabled = false;
        }
        break;
   }
@@ -363,27 +370,14 @@ void tap_dance_tap_hold_reset(qk_tap_dance_state_t *state, void *user_data) {
 }
 
 void tap_dance_tap_hold_finished_layout(qk_tap_dance_state_t *state, void *user_data) {
+    last_t = timer_read();
+
     tap_dance_tap_hold_t *tap_hold = (tap_dance_tap_hold_t *)user_data;
 
     is_hold_tapdance_disabled = true;
 
     if (state->pressed) {
         layer_on(tap_hold->hold);
-
-        if (state->count == 1
-#ifndef PERMISSIVE_HOLD
-            && !state->interrupted
-#endif
-        ) {
-            tap_hold->held = tap_hold->hold;
-        } else {
-            // don t register tap
-            // in case of arrow navigation, it prevent to send KC_ESC
-            // register_code16(tap_hold->tap);
-
-            tap_hold->held = 0;
-            is_hold_tapdance_disabled = false;
-        }
     }
 }
 
@@ -391,11 +385,6 @@ void tap_dance_tap_hold_reset_layout(qk_tap_dance_state_t *state, void *user_dat
     tap_dance_tap_hold_t *tap_hold = (tap_dance_tap_hold_t *)user_data;
 
     is_hold_tapdance_disabled = false;
-
-    if (tap_hold->held) {
-        unregister_code16(tap_hold->held);
-        tap_hold->held = 0;
-    }
 }
 
 #define ACTION_TAP_DANCE_TAP_HOLD(tap, hold) \
@@ -414,17 +403,3 @@ qk_tap_dance_action_t tap_dance_actions[] = {
     [TD_SCLN] = ACTION_TAP_DANCE_TAP_HOLD(KC_SCLN, KC_RCBR)
 };
 
-// Set a long-ish tapping term for tap-dance keys
-uint16_t get_tapping_term(uint16_t keycode, keyrecord_t *record) {
-    switch (keycode) {
-        case QK_TAP_DANCE_MAX:
-            return 275;
-            break;
-        case TD(TD_ESC):
-            return 120;
-            break;
-        default:
-            return TAPPING_TERM;
-            break;
-    }
-}
