@@ -208,6 +208,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 
     case KC_LSFT:
     case KC_LALT:
+    case KC_RALT:
     case KC_LGUI:
       if (record->event.pressed) {
           is_hold_tapdance_disabled = true;
@@ -230,10 +231,10 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
      case ACCENTS:
        if (record->event.pressed) {
            is_hold_tapdance_disabled = true;
-           register_code(KC_LALT);
+           register_code(KC_RALT);
            layer_on(_ACCENTS);
        } else {
-           unregister_code(KC_LALT);
+           unregister_code(KC_RALT);
            layer_off(_ACCENTS);
            is_hold_tapdance_disabled = false;
        }
@@ -244,7 +245,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
            register_code(KC_GRV);
        } else {
            unregister_code(KC_GRV);
-           unregister_code(KC_LALT);
+           unregister_code(KC_RALT);
            register_code(KC_E);
            unregister_code(KC_E);
 
@@ -258,7 +259,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
            register_code(KC_GRV);
        } else {
            unregister_code(KC_GRV);
-           unregister_code(KC_LALT);
+           unregister_code(KC_RALT);
            register_code(KC_A);
            unregister_code(KC_A);
 
@@ -272,7 +273,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
            register_code(KC_GRV);
        } else {
            unregister_code(KC_GRV);
-           unregister_code(KC_LALT);
+           unregister_code(KC_RALT);
            register_code(KC_U);
            unregister_code(KC_U);
 
@@ -288,7 +289,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
            unregister_code(KC_QUOT);
        } else {
            unregister_code(KC_LSFT);
-           unregister_code(KC_LALT);
+           unregister_code(KC_RALT);
            register_code(KC_I);
            unregister_code(KC_I);
 
