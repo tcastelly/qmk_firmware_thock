@@ -3,6 +3,8 @@
 
 enum layers {
   _QWERTY,
+  _QWERTY_LINUX,
+  _COLEMAK,
   _LOWER,
   _RAISE,
   _ADJUST,
@@ -13,6 +15,8 @@ enum layers {
 
 enum keycodes {
   QWERTY = SAFE_RANGE,
+  QWERTY_LINUX,
+  COLEMAK,
   LOWER,
   RAISE,
   ACCENTS,
@@ -67,6 +71,33 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     KC_LCTL,       NUM_PADS, ACCENTS, KC_LALT, KC_LGUI, LOWER,   KC_SPC,  RAISE,   KC_LEFT, KC_DOWN,     KC_UP,      KC_RGHT
 ),
 
+// same as QWERTY but use KC_RALT instead of KC_GUI
+// to use accents
+[_QWERTY_LINUX] = LAYOUT_grid(
+    TD(TD_TAB),    KC_Q,     KC_W,    KC_E,    KC_R,    KC_T,    KC_Y,    KC_U,    KC_I,    TD(TD_O),    TD(TD_P),   KC_BSPC,
+    TD(TD_ESC),    KC_A,     KC_S,    KC_D,    KC_F,    KC_G,    KC_H,    KC_J,    KC_K,    TD(TD_L),    TD(TD_SCLN),KC_QUOT,
+    KC_LSFT,       KC_Z,     KC_X,    KC_C,    KC_V,    KC_B,    KC_N,    KC_M,    KC_COMM, KC_DOT,      KC_SLSH,    KC_ENT ,
+    KC_LCTL,       NUM_PADS, ACCENTS, KC_RALT, KC_LALT, LOWER,   KC_SPC,  RAISE,   KC_LEFT, KC_DOWN,     KC_UP,      KC_RGHT
+),
+
+/* Colemak
+ * ,-----------------------------------------------------------------------------------.
+ * | Tab  |   Q  |   W  |   F  |   P  |   G  |   J  |   L  |   U  |   Y  |   ;  | Bksp |
+ * |------+------+------+------+------+-------------+------+------+------+------+------|
+ * | Esc  |   A  |   R  |   S  |   T  |   D  |   H  |   N  |   E  |   I  |   O  |  "   |
+ * |------+------+------+------+------+------|------+------+------+------+------+------|
+ * | Shift|   Z  |   X  |   C  |   V  |   B  |   K  |   M  |   ,  |   .  |   /  |Enter |
+ * |------+------+------+------+------+------+------+------+------+------+------+------|
+ * |Dvorak| Ctrl | Alt  | GUI  |Lower |    Space    |Raise | Left | Down |  Up  |Right |
+ * `-----------------------------------------------------------------------------------'
+ */
+[_COLEMAK] = LAYOUT_grid(
+    KC_TAB,  KC_Q,    KC_W,    KC_F,    KC_P,    KC_G,    KC_J,    KC_L,    KC_U,    KC_Y,    KC_SCLN, KC_BSPC,
+    KC_ESC,  KC_A,    KC_R,    KC_S,    KC_T,    KC_D,    KC_H,    KC_N,    KC_E,    KC_I,    KC_O,    KC_QUOT,
+    KC_LSFT, KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,    KC_K,    KC_M,    KC_COMM, KC_DOT,  KC_SLSH, KC_ENT ,
+    QWERTY,  KC_LCTL, KC_LALT, KC_LGUI, LOWER,   KC_SPC,  KC_SPC,  RAISE,   KC_LEFT, KC_DOWN, KC_UP,   KC_RGHT
+),
+
 /* Lower
  * ,-----------------------------------------------------------------------------------.
  * |   ~  |   !  |   @  |   #  |   $  |   %  |   ^  |   &  |   *  |   (  |   )  | Bksp |
@@ -82,7 +113,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     KC_TILD, KC_EXLM, KC_AT,   KC_HASH, KC_DLR,  KC_PERC, KC_CIRC, KC_AMPR,    KC_ASTR,    KC_LPRN, KC_RPRN, KC_DEL,
     KC_CAPS, KC_F1,   KC_F2,   KC_F3,   KC_F4,   KC_F5,   KC_F6,   KC_MINS,    KC_PLUS,    KC_LCBR, KC_RCBR, KC_PIPE,
     _______, KC_F7,   KC_F8,   KC_F9,   KC_F10,  KC_F11,  KC_F12,  S(KC_NUHS), S(KC_NUBS), KC_HOME, KC_END,  _______,
-    _______, _______, _______, _______, _______, _______, _______, _______, KC_MNXT, KC_VOLD, KC_VOLU, KC_MPLY
+    _______, _______, _______, _______, _______, _______, _______, _______,    KC_MNXT,    KC_VOLD, KC_VOLU, KC_MPLY
 ),
 
 /* Raise
@@ -105,7 +136,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
 /* Adjust (Lower + Raise)
  * ,-----------------------------------------------------------------------------------.
- * |      |     |      |      |      |      |      |      |      |      |      | Reset |
+ * |      |Qwerty|QwrtyL|Colemk|      |      |      |      |      |      |      |Reset |
  * |------+------+------+------+------+-------------+------+------+------+------+------|
  * |      |      |      |      |      |AGnorm|AGswap|      |      |      |      |      |
  * |------+------+------+------+------+------|------+------+------+------+------+------|
@@ -115,10 +146,10 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * `-----------------------------------------------------------------------------------'
  */
 [_ADJUST] = LAYOUT_grid(
-    _______, _______, _______, _______, _______, _______, _______, _______, _______,  _______, _______, RESET,
-    _______, _______, _______, _______, _______, AG_NORM, AG_SWAP, _______, _______, _______,  _______, _______,
-    _______, _______, _______, _______, _______, _______, _______, _______, _______,  _______, _______, _______,
-    _______, _______, _______, _______, _______, _______, _______, _______, _______,  _______, _______, _______
+    _______, QWERTY,  QWERTY_LINUX, COLEMAK, _______, _______, _______, _______, _______,  _______, _______, RESET,
+    _______, _______, _______,      _______, _______, AG_NORM, AG_SWAP, _______, _______,  _______, _______, _______,
+    _______, _______, _______,      _______, _______, _______, _______, _______, _______,  _______, _______, _______,
+    _______, _______, _______,      _______, _______, _______, _______, _______, _______,  _______, _______, _______
 ),
 
 /* Arrows
@@ -182,6 +213,27 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
   qk_tap_dance_action_t *action;
 
   switch (keycode) {
+    case QWERTY:
+        if (record->event.pressed) {
+            set_single_persistent_default_layer(_QWERTY);
+        }
+        return false;
+        break;
+
+    case QWERTY_LINUX:
+        if (record->event.pressed) {
+            set_single_persistent_default_layer(_QWERTY_LINUX);
+        }
+        return false;
+        break;
+
+    case COLEMAK:
+        if (record->event.pressed) {
+            set_single_persistent_default_layer(_COLEMAK);
+        }
+        return false;
+        break;
+
     case LOWER:
       if (record->event.pressed) {
         is_hold_tapdance_disabled = true;
