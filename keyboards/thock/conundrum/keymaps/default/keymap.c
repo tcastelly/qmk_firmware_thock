@@ -1,6 +1,5 @@
 #include QMK_KEYBOARD_H
 #include "quantum.h"
-#include <sys/time.h>
 
 enum layers {
   _QWERTY,
@@ -44,7 +43,7 @@ enum {
 
 bool is_hold_tapdance_disabled = false;
 
-uint16_t last_t;
+uint16_t last_hold_t;
 
 #define TD_INDEX(code) ((code)&0xFF)
 
@@ -315,7 +314,6 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
        break;
 
      // list all tap dance keycodes with tap-hold configurations
-     // default tap
      case TD(TD_O):
      case TD(TD_ESC):
      case TD(TD_TAB):
@@ -327,7 +325,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
            is_hold_tapdance_disabled = false;
        }
 
-       if (timer_elapsed(last_t) < 50) {
+       if (timer_elapsed(last_hold_t) < 50) {
            return false;
        }
 
@@ -370,7 +368,7 @@ void tap_dance_tap_hold_reset(qk_tap_dance_state_t *state, void *user_data) {
 }
 
 void tap_dance_tap_hold_finished_layout(qk_tap_dance_state_t *state, void *user_data) {
-    last_t = timer_read();
+    last_hold_t = timer_read();
 
     tap_dance_tap_hold_t *tap_hold = (tap_dance_tap_hold_t *)user_data;
 
