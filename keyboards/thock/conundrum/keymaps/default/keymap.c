@@ -432,8 +432,6 @@ void tap_dance_tap_hold_finished_layout(qk_tap_dance_state_t *state, void *user_
 }
 
 void tap_dance_tap_hold_reset_layout(qk_tap_dance_state_t *state, void *user_data) {
-    tap_dance_tap_hold_t *tap_hold = (tap_dance_tap_hold_t *)user_data;
-
     is_hold_tapdance_disabled = false;
 }
 
