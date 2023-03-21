@@ -3,7 +3,7 @@
 
 enum layers {
   _QWERTY,
-  _QWERTY_LINUX,
+  _QWERTY_OSX,
   _COLEMAK,
   _LOWER,
   _RAISE,
@@ -14,8 +14,8 @@ enum layers {
 };
 
 enum keycodes {
-  QWERTY = SAFE_RANGE,
-  QWERTY_LINUX,
+  QWERTY  = SAFE_RANGE,
+  QWERTY_OSX,
   COLEMAK,
   LOWER,
   RAISE,
@@ -64,20 +64,20 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * | Ctrl | Num  |Accent| Alt  |  GUI |Lower |Space |Raise | Left | Down |  Up  |Right |
  * `-----------------------------------------------------------------------------------'
  */
+// same as QWERTY but use KC_RALT instead of KC_GUI
+// to use accents
 [_QWERTY] = LAYOUT_grid(
     TD(TD_TAB),    KC_Q,     KC_W,    KC_E,    KC_R,    KC_T,    KC_Y,    KC_U,    KC_I,    TD(TD_O),    TD(TD_P),   KC_BSPC,
     TD(TD_ESC),    KC_A,     KC_S,    KC_D,    KC_F,    KC_G,    KC_H,    KC_J,    KC_K,    TD(TD_L),    TD(TD_SCLN),KC_QUOT,
     KC_LSFT,       KC_Z,     KC_X,    KC_C,    KC_V,    KC_B,    KC_N,    KC_M,    KC_COMM, KC_DOT,      KC_SLSH,    KC_ENT ,
-    KC_LCTL,       NUM_PADS, ACCENTS, KC_LALT, KC_LGUI, LOWER,   KC_SPC,  RAISE,   KC_LEFT, KC_DOWN,     KC_UP,      KC_RGHT
+    KC_LCTL,       NUM_PADS, ACCENTS, KC_RALT, KC_LALT, LOWER,   KC_SPC,  RAISE,   KC_LEFT, KC_DOWN,     KC_UP,      KC_RGHT
 ),
 
-// same as QWERTY but use KC_RALT instead of KC_GUI
-// to use accents
-[_QWERTY_LINUX] = LAYOUT_grid(
+[_QWERTY_OSX] = LAYOUT_grid(
     TD(TD_TAB),    KC_Q,     KC_W,    KC_E,    KC_R,    KC_T,    KC_Y,    KC_U,    KC_I,    TD(TD_O),    TD(TD_P),   KC_BSPC,
     TD(TD_ESC),    KC_A,     KC_S,    KC_D,    KC_F,    KC_G,    KC_H,    KC_J,    KC_K,    TD(TD_L),    TD(TD_SCLN),KC_QUOT,
     KC_LSFT,       KC_Z,     KC_X,    KC_C,    KC_V,    KC_B,    KC_N,    KC_M,    KC_COMM, KC_DOT,      KC_SLSH,    KC_ENT ,
-    KC_LCTL,       NUM_PADS, ACCENTS, KC_RALT, KC_LALT, LOWER,   KC_SPC,  RAISE,   KC_LEFT, KC_DOWN,     KC_UP,      KC_RGHT
+    KC_LCTL,       NUM_PADS, ACCENTS, KC_LALT, KC_LGUI, LOWER,   KC_SPC,  RAISE,   KC_LEFT, KC_DOWN,     KC_UP,      KC_RGHT
 ),
 
 /* Colemak
@@ -146,10 +146,10 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * `-----------------------------------------------------------------------------------'
  */
 [_ADJUST] = LAYOUT_grid(
-    _______, QWERTY,  QWERTY_LINUX, COLEMAK, _______, _______, _______, _______, _______,  _______, _______, RESET,
-    _______, _______, _______,      _______, _______, AG_NORM, AG_SWAP, _______, _______,  _______, _______, _______,
-    _______, _______, _______,      _______, _______, _______, _______, _______, _______,  _______, _______, _______,
-    _______, _______, _______,      _______, _______, _______, _______, _______, _______,  _______, _______, _______
+    _______, QWERTY_OSX,  QWERTY,  COLEMAK, _______, _______, _______, _______, _______,  _______, _______, RESET,
+    _______, _______,     _______, _______, _______, AG_NORM, AG_SWAP, _______, _______,  _______, _______, _______,
+    _______, _______,     _______, _______, _______, _______, _______, _______, _______,  _______, _______, _______,
+    _______, _______,     _______, _______, _______, _______, _______, _______, _______,  _______, _______, _______
 ),
 
 /* Arrows
@@ -220,9 +220,9 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         return false;
         break;
 
-    case QWERTY_LINUX:
+    case QWERTY_OSX:
         if (record->event.pressed) {
-            set_single_persistent_default_layer(_QWERTY_LINUX);
+            set_single_persistent_default_layer(_QWERTY_OSX);
         }
         return false;
         break;
