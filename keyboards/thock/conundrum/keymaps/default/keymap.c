@@ -26,6 +26,8 @@ enum keycodes {
   ACCENT_A_GRAVE,
   ACCENT_U_GRAVE,
   ACCENT_I_TREMA,
+  ACCENT_GRAVE,
+  ACCENT_CIRCUM,
   NUM_PADS
 };
 
@@ -171,17 +173,17 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * `-----------------------------------------------------------------------------------'
  */
 [_ESC] = LAYOUT_grid(
-  _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, TD(TD_DEL),
-  _______, _______, _______, _______, _______, _______, KC_LEFT, KC_DOWN, KC_UP,   KC_RGHT, _______, _______,
-  _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,
-  _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______
+  ACCENT_GRAVE, ACCENT_GRAVE, _______, ACCENT_E_GRAVE, _______, _______, ACCENT_CIRCUM, KC_WH_D, KC_WH_U, _______, _______, TD(TD_DEL),
+  _______,      _______,      _______, _______,        _______, _______, KC_LEFT,       KC_DOWN, KC_UP,   KC_RGHT, _______, _______,
+  _______,      _______,      _______, _______,        _______, _______, _______,       _______, _______, _______, _______, _______,
+  _______,      _______,      _______, _______,        _______, _______, _______,       _______, _______, _______, _______, _______
 ),
 
 [_ESC_OSX] = LAYOUT_grid(
-  _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, TD(TD_DEL_OSX),
-  _______, _______, _______, _______, _______, _______, KC_LEFT, KC_DOWN, KC_UP,   KC_RGHT, _______, _______,
-  _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,
-  _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______
+  ACCENT_GRAVE, ACCENT_GRAVE, _______, ACCENT_E_GRAVE, _______, _______, ACCENT_CIRCUM, KC_WH_D, KC_WH_U, _______, _______, TD(TD_DEL_OSX),
+  _______,      _______,      _______, _______,        _______, _______, KC_LEFT,       KC_DOWN, KC_UP,   KC_RGHT, _______, _______,
+  _______,      _______,      _______, _______,        _______, _______, _______,       _______, _______, _______, _______, _______,
+  _______,      _______,      _______, _______,        _______, _______, _______,       _______, _______, _______, _______, _______
 ),
 
 
@@ -349,6 +351,26 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
            layer_on(_QWERTY);
        }
        break;
+
+    case ACCENT_CIRCUM:
+      if (record->event.pressed) {
+          register_code(KC_RALT);
+          register_code(KC_6);
+      } else {
+          unregister_code(KC_6);
+          unregister_code(KC_RALT);
+      }
+      break;
+
+    case ACCENT_GRAVE:
+      if (record->event.pressed) {
+          register_code(KC_RALT);
+          register_code(KC_GRV);
+      } else {
+          unregister_code(KC_GRV);
+          unregister_code(KC_RALT);
+      }
+      break;
 
      case ACCENT_I_TREMA:
        if (record->event.pressed) {
