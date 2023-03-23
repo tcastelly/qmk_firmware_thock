@@ -10,7 +10,7 @@ enum layers {
   _ADJUST,
   _ESC,
   _ESC_OSX,
-  _ACCENTS,
+  _ACCENTS_RALT,
   _NUM_PADS
 };
 
@@ -20,7 +20,6 @@ enum keycodes {
   COLEMAK,
   LOWER,
   RAISE,
-  ACCENTS,
   ACCENT_TREMA,
   ACCENT_E_GRAVE,
   ACCENT_A_GRAVE,
@@ -29,6 +28,15 @@ enum keycodes {
   ACCENT_GRAVE,
   ACCENT_CIRCUM,
   NUM_PADS,
+
+  ACCENTS_RALT,
+
+  // to be used with RALT already pressed
+  ACCENT_I_CIRC_RALT,
+  ACCENT_O_CIRC_RALT,
+  ACCENT_U_AIGU_RALT,
+  ACCENT_C_RALT,
+  ACCENT_A_GRAVE_RALT,
 
   // Jetbrains macro
   JET_FIND,
@@ -84,17 +92,17 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 // same as QWERTY but use KC_RALT instead of KC_GUI
 // to use accents
 [_QWERTY] = LAYOUT_grid(
-    TD(TD_TAB),    KC_Q,     KC_W,    KC_E,    KC_R,    KC_T,    KC_Y,    KC_U,    KC_I,    TD(TD_O),    TD(TD_P),   TD(TD_BSPC),
-    TD(TD_ESC),    KC_A,     KC_S,    KC_D,    KC_F,    KC_G,    KC_H,    KC_J,    KC_K,    TD(TD_L),    TD(TD_SCLN),KC_QUOT,
-    KC_LSFT,       KC_Z,     KC_X,    KC_C,    KC_V,    KC_B,    KC_N,    KC_M,    KC_COMM, KC_DOT,      KC_SLSH,    TD(TD_ENT),
-    KC_LCTL,       NUM_PADS, ACCENTS, KC_RALT, KC_LALT, LOWER,   KC_SPC,  RAISE,   KC_LEFT, KC_DOWN,     KC_UP,      KC_RGHT
+    TD(TD_TAB),    KC_Q,     KC_W,     KC_E,         KC_R,    KC_T,    KC_Y,    KC_U,    KC_I,    TD(TD_O),    TD(TD_P),   TD(TD_BSPC),
+    TD(TD_ESC),    KC_A,     KC_S,     KC_D,         KC_F,    KC_G,    KC_H,    KC_J,    KC_K,    TD(TD_L),    TD(TD_SCLN),KC_QUOT,
+    KC_LSFT,       KC_Z,     KC_X,     KC_C,         KC_V,    KC_B,    KC_N,    KC_M,    KC_COMM, KC_DOT,      KC_SLSH,    TD(TD_ENT),
+    KC_LCTL,       _______,  NUM_PADS, ACCENTS_RALT, KC_LALT, LOWER,   KC_SPC,  RAISE,   KC_LEFT, KC_DOWN,     KC_UP,      KC_RGHT
 ),
 
 [_QWERTY_OSX] = LAYOUT_grid(
-    TD(TD_TAB),    KC_Q,     KC_W,    KC_E,    KC_R,    KC_T,    KC_Y,    KC_U,    KC_I,    TD(TD_O),    TD(TD_P),   TD(TD_BSPC_OSX),
-    TD(TD_ESC_OSX),KC_A,     KC_S,    KC_D,    KC_F,    KC_G,    KC_H,    KC_J,    KC_K,    TD(TD_L),    TD(TD_SCLN),KC_QUOT,
-    KC_LSFT,       KC_Z,     KC_X,    KC_C,    KC_V,    KC_B,    KC_N,    KC_M,    KC_COMM, KC_DOT,      KC_SLSH,    TD(TD_ENT),
-    KC_LCTL,       NUM_PADS, ACCENTS, KC_LALT, KC_LGUI, LOWER,   KC_SPC,  RAISE,   KC_LEFT, KC_DOWN,     KC_UP,      KC_RGHT
+    TD(TD_TAB),    KC_Q,     KC_W,     KC_E,         KC_R,    KC_T,    KC_Y,    KC_U,    KC_I,    TD(TD_O),    TD(TD_P),   TD(TD_BSPC_OSX),
+    TD(TD_ESC_OSX),KC_A,     KC_S,     KC_D,         KC_F,    KC_G,    KC_H,    KC_J,    KC_K,    TD(TD_L),    TD(TD_SCLN),KC_QUOT,
+    KC_LSFT,       KC_Z,     KC_X,     KC_C,         KC_V,    KC_B,    KC_N,    KC_M,    KC_COMM, KC_DOT,      KC_SLSH,    TD(TD_ENT),
+    KC_LCTL,       _______, NUM_PADS, ACCENTS_RALT, KC_LGUI, LOWER,   KC_SPC,  RAISE,   KC_LEFT, KC_DOWN,     KC_UP,      KC_RGHT
 ),
 
 /* Colemak
@@ -181,17 +189,17 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * `-----------------------------------------------------------------------------------'
  */
 [_ESC] = LAYOUT_grid(
-  ACCENT_GRAVE, ACCENT_GRAVE, _______, ACCENT_E_GRAVE, JET_RNM,  _______, ACCENT_CIRCUM, KC_WH_D, KC_WH_U, _______,      _______, TD(TD_DEL),
-  _______,      _______,      _______, _______,        JET_FIND, _______, TD(TD_LEFT),   KC_DOWN, KC_UP,   TD(TD_RIGHT), _______, _______,
-  _______,      _______,      _______, _______,        _______,  _______, _______,       _______, _______, _______,      _______, _______,
-  _______,      _______,      _______, _______,        _______,  _______, _______,       _______, _______, _______,      _______, _______
+  ACCENT_GRAVE, ACCENT_GRAVE,   _______, ACCENT_E_GRAVE, JET_RNM,  _______, ACCENT_CIRCUM, ACCENT_U_GRAVE, ACCENT_I_TREMA, _______,      _______, TD(TD_DEL),
+  _______,      ACCENT_A_GRAVE, _______, _______,        JET_FIND, _______, TD(TD_LEFT),   KC_DOWN,        KC_UP,          TD(TD_RIGHT), _______, ACCENT_TREMA,
+  _______,      _______,        _______, _______,        _______,  _______, _______,       _______,        _______,        _______,      _______, _______,
+  _______,      _______,        _______, _______,        _______,  _______, _______,       _______,        _______,        _______,      _______, _______
 ),
 
 [_ESC_OSX] = LAYOUT_grid(
-  ACCENT_GRAVE, ACCENT_GRAVE, _______, ACCENT_E_GRAVE, JET_RNM,  _______, ACCENT_CIRCUM, KC_WH_D, KC_WH_U, _______,      _______, TD(TD_DEL_OSX),
-  _______,      _______,      _______, _______,        JET_FIND, _______, TD(TD_LEFT),   KC_DOWN, KC_UP,   TD(TD_RIGHT), _______, _______,
-  _______,      _______,      _______, _______,        _______,  _______, _______,       _______, _______, _______,      _______, _______,
-  _______,      _______,      _______, _______,        _______,  _______, _______,       _______, _______, _______,      _______, _______
+  ACCENT_GRAVE, ACCENT_GRAVE,   _______, ACCENT_E_GRAVE, JET_RNM,  _______, ACCENT_CIRCUM, ACCENT_U_GRAVE, ACCENT_I_TREMA, _______,      _______, TD(TD_DEL_OSX),
+  _______,      ACCENT_A_GRAVE, _______, _______,        JET_FIND, _______, TD(TD_LEFT),   KC_DOWN,        KC_UP,          TD(TD_RIGHT), _______, ACCENT_TREMA,
+  _______,      _______,        _______, _______,        _______,  _______, _______,       _______,        _______,        _______,      _______, _______,
+  _______,      _______,        _______, _______,        _______,  _______, _______,       _______,        _______,        _______,      _______, _______
 ),
 
 
@@ -213,22 +221,11 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   _______, _______, _______, _______, _______,    _______,    _______,    _______,    KC_0,     KC_DOT,      KC_DOT,  KC_ENT
 ),
 
-/* Accents
- * ,-----------------------------------------------------------------------------------.
- * |   `  |      |      |  è   |  €   |      |   ^  |      |  ï   |  œ   |      |      |
- * |------+------+------+------+------+-------------+------+------+------+------+------|
- * |      |  à   |      |      |      |      |      |      |      |      |      |  "   |
- * |------+------+------+------+------+------|------+------+------+------+------+------|
- * |      |      |      |      |      |      |      |      |      |      |      |      |
- * |------+------+------+------+------+------+------+------+------+------+------+------|
- * |      |      |      |      |      |             |      |      |      |      |      |
- * `-----------------------------------------------------------------------------------'
- */
-[_ACCENTS] = LAYOUT_grid(
-  KC_GRV,  _______,        _______, ACCENT_E_GRAVE, KC_5,    _______, KC_6,    _______, ACCENT_I_TREMA, KC_X,    _______, _______,
-  _______, ACCENT_A_GRAVE, _______, _______,        _______, _______, _______, _______, _______,        _______, _______, ACCENT_TREMA,
-  _______, _______,        _______, _______,        _______, _______, _______, _______, _______,        _______, _______, _______,
-  _______, _______,        _______, _______,        _______, _______, _______, _______, _______,        _______, _______, _______
+[_ACCENTS_RALT] = LAYOUT_grid(
+  _______, _______,             _______, _______,       _______, _______, _______, ACCENT_U_AIGU_RALT, ACCENT_I_CIRC_RALT, ACCENT_O_CIRC_RALT, _______, _______,
+  _______, ACCENT_A_GRAVE_RALT, _______, _______,       _______, _______, _______, _______,            _______,            _______,            _______, _______,
+  _______, _______,             _______, ACCENT_C_RALT, _______, _______, _______, _______,            _______,            _______,            _______, _______,
+  _______, _______,             _______, _______,       _______, _______, _______, _______,            _______,            _______,            _______, _______
 )
 
 };
@@ -306,57 +303,51 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
       }
       break;
 
-     case ACCENTS:
+     case ACCENTS_RALT:
        if (record->event.pressed) {
            is_hold_tapdance_disabled = true;
            register_code(KC_RALT);
-           layer_on(_ACCENTS);
+           layer_on(_ACCENTS_RALT);
        } else {
            unregister_code(KC_RALT);
-           layer_off(_ACCENTS);
+           layer_off(_ACCENTS_RALT);
            is_hold_tapdance_disabled = false;
        }
        break;
 
      case ACCENT_E_GRAVE:
        if (record->event.pressed) {
+           register_code(KC_RALT);
            register_code(KC_GRV);
        } else {
            unregister_code(KC_GRV);
            unregister_code(KC_RALT);
            register_code(KC_E);
            unregister_code(KC_E);
-
-           layer_off(_ACCENTS);
-           layer_on(_QWERTY);
        }
        break;
 
      case ACCENT_A_GRAVE:
        if (record->event.pressed) {
+           register_code(KC_RALT);
            register_code(KC_GRV);
        } else {
            unregister_code(KC_GRV);
            unregister_code(KC_RALT);
            register_code(KC_A);
            unregister_code(KC_A);
-
-           layer_off(_ACCENTS);
-           layer_on(_QWERTY);
        }
        break;
 
      case ACCENT_U_GRAVE:
        if (record->event.pressed) {
+           register_code(KC_RALT);
            register_code(KC_GRV);
        } else {
            unregister_code(KC_GRV);
            unregister_code(KC_RALT);
            register_code(KC_U);
            unregister_code(KC_U);
-
-           layer_off(_ACCENTS);
-           layer_on(_QWERTY);
        }
        break;
 
@@ -382,6 +373,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 
      case ACCENT_I_TREMA:
        if (record->event.pressed) {
+           register_code(KC_RALT);
            register_code(KC_LSFT);
            register_code(KC_QUOT);
            unregister_code(KC_QUOT);
@@ -390,22 +382,87 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
            unregister_code(KC_RALT);
            register_code(KC_I);
            unregister_code(KC_I);
-
-           layer_off(_ACCENTS);
-           layer_on(_QWERTY);
        }
        break;
 
      case ACCENT_TREMA:
        if (record->event.pressed) {
+           register_code(KC_RALT);
            register_code(KC_LSFT);
            register_code(KC_QUOT);
        } else {
            unregister_code(KC_QUOT);
            unregister_code(KC_LSFT);
+           unregister_code(KC_RALT);
+       }
+       break;
 
-           layer_off(_ACCENTS);
-           layer_on(_QWERTY);
+      // to be used with RALT already pressed
+     case ACCENT_A_GRAVE_RALT:
+       if (record->event.pressed) {
+           register_code(KC_GRV);
+       } else {
+           unregister_code(KC_GRV);
+           unregister_code(KC_RALT);
+           register_code(KC_A);
+           unregister_code(KC_A);
+
+           // will be unregister by release `ACCENTS_RALT`
+           register_code(KC_RALT);
+       }
+       break;
+
+     case ACCENT_I_CIRC_RALT:
+       if (record->event.pressed) {
+           register_code(KC_6);
+       } else {
+           unregister_code(KC_6);
+           unregister_code(KC_RALT);
+           register_code(KC_I);
+           unregister_code(KC_I);
+
+           // will be unregister by release `ACCENTS_RALT`
+           register_code(KC_RALT);
+       }
+       break;
+
+     case ACCENT_O_CIRC_RALT:
+       if (record->event.pressed) {
+           register_code(KC_6);
+       } else {
+           unregister_code(KC_6);
+           unregister_code(KC_RALT);
+           register_code(KC_O);
+           unregister_code(KC_O);
+
+           // will be unregister by release `ACCENTS_RALT`
+           register_code(KC_RALT);
+       }
+       break;
+
+     case ACCENT_U_AIGU_RALT:
+       if (record->event.pressed) {
+           register_code(KC_GRV);
+       } else {
+           unregister_code(KC_GRV);
+           unregister_code(KC_RALT);
+           register_code(KC_U);
+           unregister_code(KC_U);
+
+           // will be unregister by release `ACCENTS_RALT`
+           register_code(KC_RALT);
+       }
+       break;
+
+     case ACCENT_C_RALT:
+       if (record->event.pressed) {
+           register_code(KC_COMM);
+       } else {
+           unregister_code(KC_COMM);
+           unregister_code(KC_RALT);
+
+           // will be unregister by release `ACCENTS_RALT`
+           register_code(KC_RALT);
        }
        break;
 
