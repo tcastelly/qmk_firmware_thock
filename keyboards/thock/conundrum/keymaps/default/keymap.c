@@ -56,6 +56,10 @@ enum {
     TD_DEL_OSX,
     TD_ESC,
     TD_ESC_OSX,
+    TD_LEFT_OSX,
+    TD_LEFT,
+    TD_RIGHT_OSX,
+    TD_RIGHT,
 };
 
 bool is_hold_tapdance_disabled = false;
@@ -177,17 +181,17 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * `-----------------------------------------------------------------------------------'
  */
 [_ESC] = LAYOUT_grid(
-  ACCENT_GRAVE, ACCENT_GRAVE, _______, ACCENT_E_GRAVE, JET_RNM,  _______, ACCENT_CIRCUM, KC_WH_D, KC_WH_U, _______, _______, TD(TD_DEL),
-  _______,      _______,      _______, _______,        JET_FIND, _______, KC_LEFT,       KC_DOWN, KC_UP,   KC_RGHT, _______, _______,
-  _______,      _______,      _______, _______,        _______,  _______, _______,       _______, _______, _______, _______, _______,
-  _______,      _______,      _______, _______,        _______,  _______, _______,       _______, _______, _______, _______, _______
+  ACCENT_GRAVE, ACCENT_GRAVE, _______, ACCENT_E_GRAVE, JET_RNM,  _______, ACCENT_CIRCUM, KC_WH_D, KC_WH_U, _______,      _______, TD(TD_DEL),
+  _______,      _______,      _______, _______,        JET_FIND, _______, TD(TD_LEFT),   KC_DOWN, KC_UP,   TD(TD_RIGHT), _______, _______,
+  _______,      _______,      _______, _______,        _______,  _______, _______,       _______, _______, _______,      _______, _______,
+  _______,      _______,      _______, _______,        _______,  _______, _______,       _______, _______, _______,      _______, _______
 ),
 
 [_ESC_OSX] = LAYOUT_grid(
-  ACCENT_GRAVE, ACCENT_GRAVE, _______, ACCENT_E_GRAVE, JET_RNM,  _______, ACCENT_CIRCUM, KC_WH_D, KC_WH_U, _______, _______, TD(TD_DEL_OSX),
-  _______,      _______,      _______, _______,        JET_FIND, _______, KC_LEFT,       KC_DOWN, KC_UP,   KC_RGHT, _______, _______,
-  _______,      _______,      _______, _______,        _______,  _______, _______,       _______, _______, _______, _______, _______,
-  _______,      _______,      _______, _______,        _______,  _______, _______,       _______, _______, _______, _______, _______
+  ACCENT_GRAVE, ACCENT_GRAVE, _______, ACCENT_E_GRAVE, JET_RNM,  _______, ACCENT_CIRCUM, KC_WH_D, KC_WH_U, _______,      _______, TD(TD_DEL_OSX),
+  _______,      _______,      _______, _______,        JET_FIND, _______, TD(TD_LEFT),   KC_DOWN, KC_UP,   TD(TD_RIGHT), _______, _______,
+  _______,      _______,      _______, _______,        _______,  _______, _______,       _______, _______, _______,      _______, _______,
+  _______,      _______,      _______, _______,        _______,  _______, _______,       _______, _______, _______,      _______, _______
 ),
 
 
@@ -441,6 +445,10 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
      case TD(TD_BSPC_OSX):
      case TD(TD_DEL):
      case TD(TD_DEL_OSX):
+     case TD(TD_LEFT):
+     case TD(TD_LEFT_OSX):
+     case TD(TD_RIGHT):
+     case TD(TD_RIGHT_OSX):
        if ((keycode == TD(TD_ESC) || keycode == TD(TD_ESC_OSX)) && !record->event.pressed) {
            layer_off(_ESC);
            layer_off(_ESC_OSX);
@@ -554,5 +562,11 @@ qk_tap_dance_action_t tap_dance_actions[] = {
 
     [TD_DEL_OSX] = ACTION_TAP_DANCE_TAP_HOLD_UNPROTECTED(KC_DEL, LALT(KC_DEL)),
     [TD_DEL] = ACTION_TAP_DANCE_TAP_HOLD_UNPROTECTED(KC_DEL, LCTL(KC_DEL)),
+
+    [TD_LEFT_OSX] = ACTION_TAP_DANCE_TAP_HOLD_UNPROTECTED(KC_LEFT, LALT(KC_LEFT)),
+    [TD_LEFT] = ACTION_TAP_DANCE_TAP_HOLD_UNPROTECTED(KC_LEFT, LCTL(KC_LEFT)),
+
+    [TD_RIGHT_OSX] = ACTION_TAP_DANCE_TAP_HOLD_UNPROTECTED(KC_RIGHT, LALT(KC_RIGHT)),
+    [TD_RIGHT] = ACTION_TAP_DANCE_TAP_HOLD_UNPROTECTED(KC_RIGHT, LCTL(KC_RIGHT)),
 };
 
