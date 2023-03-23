@@ -28,7 +28,11 @@ enum keycodes {
   ACCENT_I_TREMA,
   ACCENT_GRAVE,
   ACCENT_CIRCUM,
-  NUM_PADS
+  NUM_PADS,
+
+  // Jetbrains macro
+  JET_FIND,
+  JET_RNM,
 };
 
 // "tap-hold"
@@ -173,17 +177,17 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * `-----------------------------------------------------------------------------------'
  */
 [_ESC] = LAYOUT_grid(
-  ACCENT_GRAVE, ACCENT_GRAVE, _______, ACCENT_E_GRAVE, _______, _______, ACCENT_CIRCUM, KC_WH_D, KC_WH_U, _______, _______, TD(TD_DEL),
-  _______,      _______,      _______, _______,        _______, _______, KC_LEFT,       KC_DOWN, KC_UP,   KC_RGHT, _______, _______,
-  _______,      _______,      _______, _______,        _______, _______, _______,       _______, _______, _______, _______, _______,
-  _______,      _______,      _______, _______,        _______, _______, _______,       _______, _______, _______, _______, _______
+  ACCENT_GRAVE, ACCENT_GRAVE, _______, ACCENT_E_GRAVE, JET_RNM,  _______, ACCENT_CIRCUM, KC_WH_D, KC_WH_U, _______, _______, TD(TD_DEL),
+  _______,      _______,      _______, _______,        JET_FIND, _______, KC_LEFT,       KC_DOWN, KC_UP,   KC_RGHT, _______, _______,
+  _______,      _______,      _______, _______,        _______,  _______, _______,       _______, _______, _______, _______, _______,
+  _______,      _______,      _______, _______,        _______,  _______, _______,       _______, _______, _______, _______, _______
 ),
 
 [_ESC_OSX] = LAYOUT_grid(
-  ACCENT_GRAVE, ACCENT_GRAVE, _______, ACCENT_E_GRAVE, _______, _______, ACCENT_CIRCUM, KC_WH_D, KC_WH_U, _______, _______, TD(TD_DEL_OSX),
-  _______,      _______,      _______, _______,        _______, _______, KC_LEFT,       KC_DOWN, KC_UP,   KC_RGHT, _______, _______,
-  _______,      _______,      _______, _______,        _______, _______, _______,       _______, _______, _______, _______, _______,
-  _______,      _______,      _______, _______,        _______, _______, _______,       _______, _______, _______, _______, _______
+  ACCENT_GRAVE, ACCENT_GRAVE, _______, ACCENT_E_GRAVE, JET_RNM,  _______, ACCENT_CIRCUM, KC_WH_D, KC_WH_U, _______, _______, TD(TD_DEL_OSX),
+  _______,      _______,      _______, _______,        JET_FIND, _______, KC_LEFT,       KC_DOWN, KC_UP,   KC_RGHT, _______, _______,
+  _______,      _______,      _______, _______,        _______,  _______, _______,       _______, _______, _______, _______, _______,
+  _______,      _______,      _______, _______,        _______,  _______, _______,       _______, _______, _______, _______, _______
 ),
 
 
@@ -231,21 +235,21 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
   switch (keycode) {
     case QWERTY:
         if (record->event.pressed) {
-            set_single_persistent_default_layer(_QWERTY);
+            layer_move(_QWERTY);
         }
         return false;
         break;
 
     case QWERTY_OSX:
         if (record->event.pressed) {
-            set_single_persistent_default_layer(_QWERTY_OSX);
+            layer_move(_QWERTY_OSX);
         }
         return false;
         break;
 
     case COLEMAK:
         if (record->event.pressed) {
-            set_single_persistent_default_layer(_COLEMAK);
+            layer_move(_COLEMAK);
         }
         return false;
         break;
@@ -399,6 +403,29 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
            layer_off(_ACCENTS);
            layer_on(_QWERTY);
        }
+       break;
+
+     case JET_RNM:
+       if (record->event.pressed) {
+           register_code(KC_LSFT);
+           register_code(KC_F6);
+
+           unregister_code(KC_LSFT);
+           unregister_code(KC_F6);
+       }
+       return false;
+       break;
+
+     case JET_FIND:
+       if (record->event.pressed) {
+           register_code(KC_LALT);
+           register_code(KC_F1);
+
+           unregister_code(KC_F1);
+           unregister_code(KC_LALT);
+           tap_code(KC_1);
+       }
+       return false;
        break;
 
      // list all tap dance keycodes with tap-hold configurations
