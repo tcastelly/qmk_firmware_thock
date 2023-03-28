@@ -86,23 +86,23 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * |------+------+------+------+------+------|------+------+------+------+------+------|
  * | Shift|   Z  |   X  |   C  |   V  |   B  |   N  |   M  |   ,  |   .  |   /  |Enter |
  * |------+------+------+------+------+------+------+------+------+------+------+------|
- * | Ctrl | Num  |Accent| Alt  |  GUI |Lower |Space |Raise | Left | Down |  Up  |Right |
+ * | Ctrl |      |     | Alt  |  GUI |Lower |Space |Raise | Left | Down |  Up  |Right |
  * `-----------------------------------------------------------------------------------'
  */
 // same as QWERTY but use KC_RALT instead of KC_GUI
 // to use accents
 [_QWERTY] = LAYOUT_grid(
-    TD(TD_TAB),    KC_Q,     KC_W,     KC_E,         KC_R,    KC_T,    KC_Y,    KC_U,    KC_I,    TD(TD_O),    TD(TD_P),   TD(TD_BSPC),
-    TD(TD_ESC),    KC_A,     KC_S,     KC_D,         KC_F,    KC_G,    KC_H,    KC_J,    KC_K,    TD(TD_L),    TD(TD_SCLN),KC_QUOT,
-    KC_LSFT,       KC_Z,     KC_X,     KC_C,         KC_V,    KC_B,    KC_N,    KC_M,    KC_COMM, KC_DOT,      KC_SLSH,    TD(TD_ENT),
-    KC_LCTL,       _______,  NUM_PADS, ACCENTS_RALT, KC_LALT, LOWER,   KC_SPC,  RAISE,   KC_LEFT, KC_DOWN,     KC_UP,      KC_RGHT
+    TD(TD_TAB),    KC_Q,     KC_W,          KC_E,    KC_R,    KC_T,    KC_Y,    KC_U,    KC_I,    TD(TD_O),    TD(TD_P),   TD(TD_BSPC),
+    TD(TD_ESC),    KC_A,     KC_S,          KC_D,    KC_F,    KC_G,    KC_H,    KC_J,    KC_K,    TD(TD_L),    TD(TD_SCLN),KC_QUOT,
+    KC_LSFT,       KC_Z,     KC_X,          KC_C,    KC_V,    KC_B,    KC_N,    KC_M,    KC_COMM, KC_DOT,      KC_SLSH,    TD(TD_ENT),
+    KC_LCTL,       NUM_PADS, ACCENTS_RALT,  KC_LCTL, KC_LALT, LOWER,   KC_SPC,  RAISE,   KC_LEFT, KC_DOWN,     KC_UP,      KC_RGHT
 ),
 
 [_QWERTY_OSX] = LAYOUT_grid(
-    TD(TD_TAB),    KC_Q,     KC_W,     KC_E,         KC_R,    KC_T,    KC_Y,    KC_U,    KC_I,    TD(TD_O),    TD(TD_P),   TD(TD_BSPC_OSX),
-    TD(TD_ESC_OSX),KC_A,     KC_S,     KC_D,         KC_F,    KC_G,    KC_H,    KC_J,    KC_K,    TD(TD_L),    TD(TD_SCLN),KC_QUOT,
-    KC_LSFT,       KC_Z,     KC_X,     KC_C,         KC_V,    KC_B,    KC_N,    KC_M,    KC_COMM, KC_DOT,      KC_SLSH,    TD(TD_ENT),
-    KC_LCTL,       _______, NUM_PADS, ACCENTS_RALT, KC_LGUI, LOWER,   KC_SPC,  RAISE,   KC_LEFT, KC_DOWN,     KC_UP,      KC_RGHT
+    TD(TD_TAB),    KC_Q,     KC_W,         KC_E,    KC_R,    KC_T,    KC_Y,    KC_U,    KC_I,    TD(TD_O),    TD(TD_P),   TD(TD_BSPC_OSX),
+    TD(TD_ESC_OSX),KC_A,     KC_S,         KC_D,    KC_F,    KC_G,    KC_H,    KC_J,    KC_K,    TD(TD_L),    TD(TD_SCLN),KC_QUOT,
+    KC_LSFT,       KC_Z,     KC_X,         KC_C,    KC_V,    KC_B,    KC_N,    KC_M,    KC_COMM, KC_DOT,      KC_SLSH,    TD(TD_ENT),
+    KC_LCTL,       NUM_PADS, ACCENTS_RALT, KC_LCTL, KC_LGUI, LOWER,   KC_SPC,  RAISE,   KC_LEFT, KC_DOWN,     KC_UP,      KC_RGHT
 ),
 
 /* Colemak
