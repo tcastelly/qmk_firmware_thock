@@ -193,14 +193,14 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 [_ESC] = LAYOUT_grid(
   ACCENT_GRAVE, ACCENT_GRAVE,   _______, ACCENT_E_GRAVE, JET_RNM,  _______, ACCENT_CIRCUM, ACCENT_U_GRAVE, ACCENT_I_TREMA, _______,      _______, TD(TD_DEL),
   _______,      ACCENT_A_GRAVE, _______, _______,        JET_FIND, _______, TD(TD_LEFT),   KC_DOWN,        KC_UP,          TD(TD_RIGHT), _______, ACCENT_TREMA,
-  _______,      _______,        _______, _______,        _______,  _______, _______,       _______,        _______,        _______,      _______, _______,
+  _______,      _______,        _______, _______,        _______,  _______, _______,       _______,        KC_HOME,        KC_END,       _______, _______,
   _______,      _______,        _______, _______,        _______,  _______, _______,       _______,        _______,        _______,      _______, _______
 ),
 
 [_ESC_OSX] = LAYOUT_grid(
   ACCENT_GRAVE, ACCENT_GRAVE,   _______, ACCENT_E_GRAVE, JET_RNM,  _______, ACCENT_CIRCUM, ACCENT_U_GRAVE, ACCENT_I_TREMA, _______,      _______, TD(TD_DEL_OSX),
   _______,      ACCENT_A_GRAVE, _______, _______,        JET_FIND, _______, TD(TD_LEFT),   KC_DOWN,        KC_UP,          TD(TD_RIGHT), _______, ACCENT_TREMA,
-  _______,      _______,        _______, _______,        _______,  _______, _______,       _______,        _______,        _______,      _______, _______,
+  _______,      _______,        _______, _______,        _______,  _______, _______,       _______,        KC_HOME,        KC_END,       _______, _______,
   _______,      _______,        _______, _______,        _______,  _______, _______,       _______,        _______,        _______,      _______, _______
 ),
 
