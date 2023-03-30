@@ -70,6 +70,8 @@ enum {
     TD_RIGHT,
 };
 
+int max_timer_elapsed = 10;
+
 bool is_hold_tapdance_disabled = false;
 
 uint16_t last_hold_t;
@@ -512,7 +514,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
            is_hold_tapdance_disabled = false;
        }
 
-       if (timer_elapsed(last_hold_t) < 50) {
+       if (timer_elapsed(last_hold_t) < max_timer_elapsed) {
            return false;
        }
 
