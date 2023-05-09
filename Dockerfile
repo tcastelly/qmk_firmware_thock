@@ -18,7 +18,10 @@ RUN apt-get update && apt-get install --no-install-recommends -y \
     wget \
     zip \
     python \
+    python3-pip \
     && rm -rf /var/lib/apt/lists/*
+
+RUN pip install milc
 
 ENV KEYBOARD=thock/conundrum
 ENV KEYMAP=default:uf2
