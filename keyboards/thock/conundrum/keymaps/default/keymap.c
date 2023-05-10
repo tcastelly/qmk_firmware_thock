@@ -72,9 +72,10 @@ enum {
 
 int max_timer_elapsed = 10;
 
-bool is_hold_tapdance_disabled = false;
+// prevent to escape first timer_elapsed test
+uint16_t last_hold_t = 15;
 
-uint16_t last_hold_t;
+bool is_hold_tapdance_disabled = false;
 
 #define TD_INDEX(code) ((code)&0xFF)
 
