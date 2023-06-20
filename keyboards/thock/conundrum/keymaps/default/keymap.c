@@ -4,6 +4,7 @@
 enum layers {
   _QWERTY,
   _QWERTY_OSX,
+  _QWERTY_GAMING,
   _COLEMAK,
   _LOWER,
   _RAISE,
@@ -17,6 +18,7 @@ enum layers {
 enum keycodes {
   QWERTY  = SAFE_RANGE,
   QWERTY_OSX,
+  QWERTY_GAMING,
   COLEMAK,
   LOWER,
   RAISE,
@@ -108,6 +110,14 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     KC_LCTL,       NUM_PADS, ACCENTS_RALT, KC_LCTL, KC_LGUI, LOWER,   KC_SPC,  RAISE,   KC_LEFT, KC_DOWN,     KC_UP,      KC_RGHT
 ),
 
+// remove tapdance and move spacebar
+[_QWERTY_GAMING] = LAYOUT_grid(
+    KC_TAB,    KC_Q,     KC_W,          KC_E,    KC_R,    KC_T,    KC_Y,    KC_U,    KC_I,    KC_O,        KC_P,       KC_BSPC,
+    KC_ESC,    KC_A,     KC_S,          KC_D,    KC_F,    KC_G,    KC_H,    KC_J,    KC_K,    KC_L,        KC_SCLN,    KC_QUOT,
+    KC_LSFT,   KC_Z,     KC_X,          KC_C,    KC_V,    KC_B,    KC_N,    KC_M,    KC_COMM, KC_DOT,      KC_SLSH,    KC_ENT,
+    KC_LCTL,   NUM_PADS, ACCENTS_RALT,  KC_LCTL, KC_SPC,  RAISE,   KC_SPC,  LOWER,   KC_LEFT, KC_DOWN,     KC_UP,      KC_RGHT
+),
+
 /* Colemak
  * ,-----------------------------------------------------------------------------------.
  * | Tab  |   Q  |   W  |   F  |   P  |   G  |   J  |   L  |   U  |   Y  |   ;  | Bksp |
@@ -174,10 +184,10 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * `-----------------------------------------------------------------------------------'
  */
 [_ADJUST] = LAYOUT_grid(
-    _______, QWERTY_OSX,  QWERTY,  COLEMAK, _______, _______, _______, _______, _______,  _______, _______, RESET,
-    _______, _______,     _______, _______, _______, AG_NORM, AG_SWAP, _______, _______,  _______, _______, _______,
-    _______, _______,     _______, _______, _______, _______, _______, _______, _______,  _______, _______, _______,
-    _______, _______,     _______, _______, _______, _______, _______, _______, _______,  _______, _______, _______
+    _______, QWERTY_OSX,  QWERTY,  QWERTY_GAMING, COLEMAK, _______, _______, _______, _______,  _______, _______, RESET,
+    _______, _______,     _______, _______,       _______, AG_NORM, AG_SWAP, _______, _______,  _______, _______, _______,
+    _______, _______,     _______, _______,       _______, _______, _______, _______, _______,  _______, _______, _______,
+    _______, _______,     _______, _______,       _______, _______, _______, _______, _______,  _______, _______, _______
 ),
 
 /* ESC
@@ -247,6 +257,13 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     case QWERTY_OSX:
         if (record->event.pressed) {
             layer_move(_QWERTY_OSX);
+        }
+        return false;
+        break;
+
+    case QWERTY_GAMING:
+        if (record->event.pressed) {
+            layer_move(_QWERTY_GAMING);
         }
         return false;
         break;
