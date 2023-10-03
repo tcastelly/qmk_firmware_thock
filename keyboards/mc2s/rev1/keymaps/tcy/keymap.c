@@ -1,5 +1,4 @@
 #include QMK_KEYBOARD_H
-#include "quantum.h"
 // #include "keymap_jp.h"
 
 #include "tapdance.c"
