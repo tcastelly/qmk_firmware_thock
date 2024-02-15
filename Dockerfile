@@ -1,4 +1,4 @@
-FROM debian:11
+FROM debian:12
 
 RUN apt-get update && apt-get install --no-install-recommends -y \
     avr-libc \
@@ -17,11 +17,11 @@ RUN apt-get update && apt-get install --no-install-recommends -y \
     unzip \
     wget \
     zip \
-    python \
+    python3 \
     python3-pip \
     && rm -rf /var/lib/apt/lists/*
 
-RUN pip install milc
+RUN pip install milc --break-system-packages
 
 ENV KEYBOARD=thock/conundrum
 ENV KEYMAP=default:uf2
