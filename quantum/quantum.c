@@ -273,6 +273,16 @@ bool process_record_quantum(keyrecord_t *record) {
 
   #ifdef TAP_DANCE_ENABLE
     preprocess_tap_dance(keycode, record);
+    /* An interrupting key press may have just finished a dance whose hold
+     * action switches layers (e.g. TD_ESC -> _ESC). The keycode above was
+     * resolved against the PRE-dance layer state, so a fast ESC+a picked up
+     * the base-layer keycode instead of the _ESC one. Modern QMK resolves
+     * the interrupting key after the dance finishes; replicate that by
+     * re-resolving (also refreshes the source-layer cache so the release
+     * matches the press). */
+    if (record->event.pressed) {
+      keycode = get_record_keycode(record);
+    }
   #endif
 
   #if defined(OLED_DRIVER_ENABLE) && !defined(OLED_DISABLE_TIMEOUT)

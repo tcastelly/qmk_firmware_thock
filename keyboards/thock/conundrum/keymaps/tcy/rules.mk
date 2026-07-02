@@ -3,6 +3,18 @@
 
 TAP_DANCE_ENABLE = yes
 
+# board rules.mk disables this; needed for the _ESC layer mouse keys
+# (KC_MS_* movement + the KC_WH_* wheel keys, which were silently dead)
+MOUSEKEY_ENABLE = yes
+
+# common.mk defaults MOUSE_SHARED_EP to yes, which prepends a report_id byte
+# to report_mouse_t — but the arm_atsam USB stack uses a dedicated mouse
+# endpoint whose 5-byte descriptor has NO report id, and send_mouse() memcpys
+# the struct raw. With the id byte in, every field lands one byte off on the
+# host (x read as y, y read as wheel). report.h only undefs MOUSE_SHARED_EP
+# for arm_atsam inside its NKRO block, and this build has NKRO off.
+MOUSE_SHARED_EP = no
+
 # headers (tcy.h / tapdance.h) live in the mounted canonical dir
 CFLAGS += -Ishared_tcy
 

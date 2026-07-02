@@ -56,8 +56,8 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   [_ESC] = LAYOUT_grid(
       ACCENT_GRAVE, ACCENT_GRAVE, _______, ACCENT_E_GRAVE, JET_RNM, _______, ACCENT_CIRCUM, KC_WH_D, KC_WH_U, JET_OPTI, JET_FORMAT, TD(TD_DEL),
       _______, ACCENT_A_GRAVE, _______, _______, JET_FIND, _______, TD(TD_LEFT), KC_DOWN, KC_UP, TD(TD_RIGHT), _______, ACCENT_TREMA,
-      _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,
-      _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______
+      _______, _______, _______, _______, _______, _______, KC_MS_LEFT, KC_MS_DOWN, KC_MS_UP, KC_MS_RIGHT, _______, _______,
+      _______, _______, _______, _______, _______, KC_MS_BTN2, _______, KC_MS_BTN1, _______, _______, _______, _______
   ),
 
   // Placeholder layers required by TCY_FULL_TD: the canonical tap-dances call
