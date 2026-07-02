@@ -111,13 +111,6 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     KC_LCTL,       NUM_PADS, ACCENTS_RALT,  KC_LCTL, KC_LALT, LOWER,   KC_SPC,  RAISE,   TD(TD_LEFT_RALT), KC_DOWN,     KC_UP,      KC_RGHT
 ),
 
-[_QWERTY_OSX] = LAYOUT_grid(
-    TD(TD_TAB),    KC_Q,         KC_W,         KC_E,    KC_R,    KC_T,    KC_Y,    KC_U,    KC_I,             TD(TD_O),    TD(TD_P),   TD(TD_BSPC_OSX),
-    TD(TD_ESC_OSX),TD(TD_A_OSX), KC_S,         KC_D,    KC_F,    KC_G,    KC_H,    KC_J,    KC_K,             TD(TD_L),    TD(TD_SCLN),KC_QUOT,
-    KC_LSFT,       KC_Z,         KC_X,         KC_C,    KC_V,    KC_B,    KC_N,    KC_M,    KC_COMM,          KC_DOT,      KC_SLSH,    TD(TD_ENT),
-    KC_LCTL,       NUM_PADS,     ACCENTS_RALT, KC_LCTL, KC_LGUI, LOWER,   KC_SPC,  RAISE,   TD(TD_LEFT_RALT), KC_DOWN,     KC_UP,      KC_RGHT
-),
-
 // remove tapdance and move spacebar
 [_QWERTY_GAMING] = LAYOUT_grid(
     KC_TAB,    KC_Q,     KC_W,          KC_E,    KC_R,    KC_T,    KC_Y,    KC_U,    KC_I,    KC_O,        KC_P,       KC_BSPC,
