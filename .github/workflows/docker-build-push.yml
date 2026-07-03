@@ -28,7 +28,7 @@ jobs:
         id: meta
         uses: docker/metadata-action@v5
         with:
-          images: thock/conundrum
+          images: qmk-thock-conumdrum
 
       - name: Build and push Docker image
         uses: docker/build-push-action@v5
