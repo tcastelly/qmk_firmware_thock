@@ -92,19 +92,18 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
 /* Bounds-checked keymap lookup for the frozen base.
  *
- * The canonical tcy.c uses "signal" layers (_OSX_SIGNAL / _OLED_OFF_SIGNAL) as
- * persistent flags: QWERTY_OSX does layer_on(_OSX_SIGNAL) and is_osx is read
- * back from the layer state. These flag layers are deliberately given NO layout.
+ * The canonical tcy.c now carries the keymap_key_to_keycode override itself
+ * (signal layers -> KC_TRNS) and delegates the actual read to modern QMK's
+ * generated keycode_at_keymap_location(). This base has no introspection, so
+ * provide it here, where keymaps[] and its real size are visible (declared by
+ * the keymap_introspection.h stand-in next to this file).
  *
- * Modern QMK's keymap_key_to_keycode bounds-checks the layer index and returns
- * KC_TRANSPARENT past the last defined layer, so the flag bit is harmless. But
- * this pre-2022 base (quantum/keymap_common.c) reads keymaps[layer] with no
- * bounds check, and its layer scan walks all 32 bits — so an active _OSX_SIGNAL
- * makes every key read past the end of keymaps[] and return garbage. That is
- * what broke QWERTY_OSX. Replicate the modern guard here (weak override). */
-uint16_t keymap_key_to_keycode(uint8_t layer, keypos_t key) {
-    if (layer >= (sizeof(keymaps) / sizeof(keymaps[0]))) {
-        return KC_TRANSPARENT;
+ * Out-of-range layers return KC_TRANSPARENT, not modern QMK's KC_NO: this
+ * pre-2022 base's layer scan walks all 32 bits, so a stray bit past the last
+ * defined layer must fall through instead of swallowing every key. */
+uint16_t keycode_at_keymap_location(uint8_t layer_num, uint8_t row, uint8_t column) {
+    if (layer_num < (sizeof(keymaps) / sizeof(keymaps[0])) && row < MATRIX_ROWS && column < MATRIX_COLS) {
+        return pgm_read_word(&keymaps[layer_num][row][column]);
     }
-    return pgm_read_word(&keymaps[layer][key.row][key.col]);
+    return KC_TRANSPARENT;
 }

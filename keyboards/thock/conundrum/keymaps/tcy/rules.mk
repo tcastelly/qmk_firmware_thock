@@ -15,8 +15,10 @@ MOUSEKEY_ENABLE = yes
 # for arm_atsam inside its NKRO block, and this build has NKRO off.
 MOUSE_SHARED_EP = no
 
-# headers (tcy.h / tapdance.h) live in the mounted canonical dir
+# headers (tcy.h / tapdance.h) live in the mounted canonical dir; the keymap
+# dir provides the keymap_introspection.h stand-in that tcy.c includes
 CFLAGS += -Ishared_tcy
+CFLAGS += -Ikeyboards/thock/conundrum/keymaps/tcy
 
 # Compile the canonical tcy.c / tapdance.c via thin wrappers that apply the
 # adapter after QMK headers (see tcy_wrap.c / tapdance_wrap.c). The wrappers
